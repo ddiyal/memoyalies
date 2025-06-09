@@ -287,7 +287,7 @@ body.dark-mode .sidebar-search-input:focus { background-color: rgba(118,118,128,
   background-color: var(--c-bg-primary);
   border-radius: 10px; margin-bottom: 20px !important; box-shadow: 0 1px 3px var(--c-shadow); overflow: hidden; 
 }
-.sidebar-menu .menu-section .LinkList ul, .sidebar-menu .menu-section .Label ul, .sidebar-menu .menu-section .BlogArchive #ArchiveList { background-color: transparent; }
+.sidebar-menu .menu-section .LinkList ul, .sidebar-menu .menu-section .Label ul, .sidebar-menu .menu-section .BlogArchive #ArchiveList, .sidebar-menu .menu-section .PopularPosts ul { background-color: transparent; }
 .sidebar-menu ul li a, .sidebar-menu ul li .menu-item-button { 
   display: flex; align-items: center; padding: 12px 16px; color: var(--c-text-primary);
   border-bottom: 1px solid var(--c-border); font-size: 16px; text-decoration: none;
@@ -449,32 +449,29 @@ body.dark-mode .ios-tag:hover { background-color: rgba(10, 132, 255, 0.25); }
   margin-top: 0px; background-color: transparent; 
 }
 
-#related-posts-container, .PopularPosts ul {
+/* Penyesuaian Style untuk Widget PopularPosts */
+.PopularPosts ul {
   list-style: none; padding: 0; margin: 0;
 }
-
-.related-post-item, .PopularPosts li { 
-    display: flex; align-items: center; padding: 10px !important; border-bottom: 1px solid var(--c-border); 
+.PopularPosts li { 
+    display: flex; align-items: center; padding: 12px 16px !important; border-bottom: 1px solid var(--c-border); 
 }
-.PopularPosts li { border-bottom: 1px solid var(--c-border) !important; }
-.related-post-item:last-child, .PopularPosts li:last-child { border-bottom: none; }
-
-.related-post-item a, .PopularPosts a { 
-    display: flex; align-items: center; text-decoration: none; color: var(--c-text-primary); width: 100%;
+.PopularPosts li:last-child { border-bottom: none; }
+.PopularPosts a { 
+    display: flex; align-items: center; text-decoration: none; color: var(--c-text-primary); width: 100%; gap: 12px;
 }
-.related-post-item a:hover .related-post-title, .PopularPosts a:hover .item-title a { color: var(--c-accent); }
-
-.related-post-thumbnail, .PopularPosts .item-thumbnail img { 
-    width: 60px; height: 60px; flex-shrink: 0; margin-right: 12px; border-radius: 8px; object-fit: cover; 
+.PopularPosts a:hover .item-title { color: var(--c-accent); }
+.PopularPosts .item-thumbnail { margin-right: 0; }
+.PopularPosts .item-thumbnail img { 
+    width: 64px; height: 64px; flex-shrink: 0; border-radius: 12px; object-fit: cover; 
 }
- .PopularPosts .item-thumbnail { margin-right: 12px; }
-.related-post-info, .PopularPosts .item-title { flex-grow: 1; min-width: 0; }
-.related-post-title, .PopularPosts .item-title a {
-  font-size: 14px; font-weight: 500; line-height: 1.3; margin: 0;
+.PopularPosts .item-info { flex-grow: 1; min-width: 0; }
+.PopularPosts .item-title {
+  font-size: 15px; font-weight: 500; line-height: 1.4; margin: 0;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
   color: var(--c-text-primary);
+  transition: color 0.2s ease;
 }
-.related-post-date { font-size: 11px; color: var(--c-text-secondary); }
 .PopularPosts .item-snippet { display: none; }
 
 /* --- Utility & Hidden --- */

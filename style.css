@@ -531,3 +531,122 @@ body.dark-mode .search-overlay-mobile { background: rgba(28, 28, 30, 0.98); }
 #Stats1_sparklinespan {
     display: none !important;
 }
+/* Style untuk Tombol Aksi Melayang */
+      .floating-action-button {
+        position: fixed;
+        bottom: 80px; /* Memberi ruang untuk navigasi bawah di mobile */
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: var(--primary-accent-color, #007aff);
+        color: white;
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
+        transition: transform 0.2s ease-in-out;
+      }
+      .floating-action-button:hover {
+        transform: scale(1.1);
+      }
+      .floating-action-button svg {
+        width: 24px;
+        height: 24px;
+        fill: white;
+      }
+      /* Posisi Tombol Populer */
+      .popular-posts-btn {
+        bottom: 140px; /* Posisikan di atas tombol komentar */
+      }
+      /* Style untuk Jendela Pop-up */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: none; /* Sembunyikan secara default */
+        align-items: center;
+        justify-content: center;
+      }
+      .popup-container {
+        background-color: var(--bg-color, #fff);
+        color: var(--text-color, #000);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        animation: popup-appear 0.3s ease-out;
+      }
+      @keyframes popup-appear {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color, #eee);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+      .popup-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+      .close-popup-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--text-color, #000);
+        padding: 0 10px;
+      }
+      .popup-body {
+        overflow-y: auto;
+        flex-grow: 1;
+      }
+      /* Menyesuaikan widget postingan populer di dalam pop-up */
+      .popup-body .popular-posts ul {
+        list-style: none;
+        padding: 0;
+      }
+       .popup-body .popular-posts li a {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+        color: var(--text-color, #000);
+        text-decoration: none;
+      }
+      .popup-body .popular-posts li a:hover {
+        background-color: var(--hover-bg-color, #f0f0f0);
+      }
+      .popup-body .popular-posts .item-thumbnail img {
+        width: 60px;
+        height: 60px;
+        border-radius: 6px;
+        object-fit: cover;
+      }
+      /* Responsif */
+      @media (max-width: 768px) {
+        .floating-action-button {
+          right: 15px;
+          bottom: 70px;
+        }
+        .popular-posts-btn {
+          bottom: 130px;
+        }
+      }

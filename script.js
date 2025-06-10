@@ -337,3 +337,46 @@ function showRelatedPosts(json) {
        if (widget) widget.style.display = 'none';
    }
 }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Logika untuk Pop-up Postingan Populer
+      const popularBtn = document.getElementById('togglePopularBtn');
+      const popularOverlay = document.getElementById('popularPostsOverlay');
+      const closePopularBtn = document.getElementById('closePopularBtn');
+
+      if (popularBtn && popularOverlay && closePopularBtn) {
+        popularBtn.addEventListener('click', function() {
+          popularOverlay.style.display = 'flex';
+        });
+        
+        closePopularBtn.addEventListener('click', function() {
+          popularOverlay.style.display = 'none';
+        });
+
+        popularOverlay.addEventListener('click', function(event) {
+          if (event.target === popularOverlay) {
+            popularOverlay.style.display = 'none';
+          }
+        });
+      }
+
+      // Logika untuk Pop-up Komentar
+      const commentsBtn = document.getElementById('toggleCommentsBtn');
+      const commentsOverlay = document.getElementById('commentsOverlay');
+      const closeCommentsBtn = document.getElementById('closeCommentsBtn');
+      
+      if (commentsBtn && commentsOverlay && closeCommentsBtn) {
+        commentsBtn.addEventListener('click', function() {
+          commentsOverlay.style.display = 'flex';
+        });
+
+        closeCommentsBtn.addEventListener('click', function() {
+          commentsOverlay.style.display = 'none';
+        });
+        
+        commentsOverlay.addEventListener('click', function(event) {
+          if (event.target === commentsOverlay) {
+            commentsOverlay.style.display = 'none';
+          }
+        });
+      }
+    });

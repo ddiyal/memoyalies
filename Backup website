@@ -1,0 +1,3578 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang='id' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+    <meta charset='UTF-8'/>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
+    <meta content='light dark' name='color-scheme'/>
+    <b:include data='blog' name='all-head-content'/>
+    <title><data:blog.pageTitle/></title>
+
+    <!-- Blogger Theme Styles -->
+    <b:skin><![CDATA[       
+/*-----------------------------------------------------------------------------------*/
+/* 1. ROOT VARIABLES & GLOBAL STYLES
+/*-----------------------------------------------------------------------------------*/
+:root {
+    /* Ukuran Layout */
+    --status-bar-height: 44px;
+    --bottom-nav-height: 60px;
+    --sidebar-width-desktop: 300px;
+    --sidebar-width-mobile: 280px;
+
+    /* Palet Warna - Mode Terang */
+    --c-bg-primary: #ffffff;
+    --c-bg-secondary: #f0f2f5;
+    --c-bg-outside: #e5e5ea;
+    --c-text-primary: #1c1c1e;
+    --c-text-secondary: #8a8a8e;
+    --c-text-tertiary: #3c3c43;
+    --c-border: #e5e5e5;
+    --c-accent: #007aff;
+    --c-accent-text: #ffffff;
+    --c-accent-bg: rgba(0, 122, 255, 0.1);
+    --c-shadow: rgba(0, 0, 0, 0.07);
+
+    /* Warna Khusus Status Bar */
+    --c-statusbar-bg: rgba(248, 248, 248, 0.92);
+    --c-statusbar-border: rgba(60, 60, 67, 0.29);
+}
+
+body.dark-mode {
+    /* Palet Warna - Mode Gelap */
+    --c-bg-primary: #1c1c1e;
+    --c-bg-secondary: #000000;
+    --c-bg-outside: #000000;
+    --c-text-primary: #ffffff;
+    --c-text-secondary: #8d8d92;
+    --c-text-tertiary: #a9a9b0;
+    --c-border: #38383a;
+    --c-accent: #0a84ff;
+    --c-accent-bg: rgba(10, 132, 255, 0.18);
+    --c-shadow: rgba(0, 0, 0, 0.2);
+
+    /* Warna Khusus Status Bar - Mode Gelap */
+    --c-statusbar-bg: rgba(28, 28, 30, 0.85);
+    --c-statusbar-border: rgba(84, 84, 88, 0.65);
+}
+
+/* Gaya Global */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: var(--c-bg-outside);
+    color: var(--c-text-primary);
+    margin: 0;
+    padding: 0;
+    padding-top: var(--status-bar-height);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 2. HEADER, STATUS BAR, & BREADCRUMBS
+/*-----------------------------------------------------------------------------------*/
+.ios-status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--status-bar-height);
+    background-color: var(--c-statusbar-bg);
+    border-bottom: 1px solid var(--c-statusbar-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+    font-weight: 500;
+    z-index: 1005;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-sizing: border-box;
+}
+
+.status-bar-left,
+.status-bar-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.status-bar-right {
+    margin-left: auto;
+}
+
+.status-bar-time {
+    cursor: pointer;
+}
+
+.status-bar-date,
+.status-bar-time {
+    font-size: 13px;
+    color: var(--c-text-primary);
+}
+
+.status-bar-date {
+    margin-left: 8px;
+    display: none;
+}
+
+.status-bar-icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    color: var(--c-accent);
+    cursor: pointer;
+    line-height: 1;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.status-bar-icon-button svg {
+    width: 13px;
+    height: 21px;
+    stroke: currentColor;
+    stroke-width: 2.5px;
+    margin-right: 4px;
+}
+
+.theme-toggle-button {
+    padding: 6px;
+    margin-right: 6px;
+}
+
+.theme-toggle-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: none;
+    fill: var(--c-text-primary);
+    margin: 0;
+}
+
+.progress-container {
+    position: fixed;
+    top: var(--status-bar-height);
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 1004;
+    background-color: transparent;
+    display: none; /* Ditampilkan oleh JS di halaman post */
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--c-accent);
+    transition: width 0.1s ease-out;
+}
+
+.breadcrumbs-in-statusbar {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--c-text-primary);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 5px;
+    display: none; /* Ditampilkan oleh media query */
+}
+
+.breadcrumbs-in-statusbar ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.breadcrumbs-in-statusbar li {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breadcrumbs-in-statusbar li:not(:last-child) {
+    max-width: 100px;
+}
+
+.breadcrumbs-in-statusbar li:last-child {
+    max-width: 150px;
+    font-weight: 500;
+}
+
+.breadcrumbs-in-statusbar li:not(:last-child)::after {
+    content: ">";
+    margin: 0 8px;
+    color: inherit;
+    opacity: 0.6;
+    font-size: 11px;
+}
+
+.breadcrumbs-in-statusbar a,
+.breadcrumbs-in-statusbar span[aria-current="page"] {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.breadcrumbs-in-statusbar a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-post-title {
+    display: inline-block;
+    max-width: 15ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 3. SIDEBAR & MENU
+/*-----------------------------------------------------------------------------------*/
+.sidebar-menu {
+    /* Didefinisikan dalam media query */
+}
+
+.sidebar-main-title-container {
+    padding: 20px 16px 10px;
+}
+
+.sidebar-main-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--c-text-primary);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sidebar-main-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar-search-container {
+    padding: 0 16px 16px;
+}
+
+.sidebar-search-form {
+    display: flex;
+    position: relative;
+}
+
+.sidebar-search-input {
+    flex-grow: 1;
+    padding: 10px 12px 10px 36px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(118, 118, 128, 0.12);
+    font-size: 16px;
+    color: var(--c-text-primary);
+    outline: 0;
+}
+
+.sidebar-search-input:focus,
+body.dark-mode .sidebar-search-input {
+    background-color: rgba(118, 118, 128, 0.24);
+}
+
+body.dark-mode .sidebar-search-input:focus {
+    background-color: rgba(118, 118, 128, 0.36);
+}
+
+.sidebar-search-input::placeholder {
+    color: var(--c-text-secondary);
+}
+
+.sidebar-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-text-secondary);
+    pointer-events: none;
+}
+
+.sidebar-search-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+#live-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--c-bg-primary);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--c-border);
+}
+
+#live-search-results ul,
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#live-search-results li a {
+    display: block;
+    padding: 12px 16px;
+    color: var(--c-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--c-border);
+    font-size: 14px;
+}
+
+#live-search-results li:last-child a,
+.sidebar-menu .widget ul li:last-child .menu-item-button,
+.sidebar-menu .widget ul li:last-child a {
+    border-bottom: none;
+}
+
+#live-search-results li a:hover {
+    background-color: var(--c-bg-secondary);
+}
+
+#live-search-results .no-results,
+#live-search-results .search-loader {
+    padding: 16px;
+    text-align: center;
+    color: var(--c-text-secondary);
+    font-size: 14px;
+}
+
+/* Penyesuaian Lebar & Tampilan Popup Pencarian FAB (REVISI LENGKAP) */
+
+/* 1. Sembunyikan sepenuhnya elemen popup-header yang lama */
+#searchFabOverlay .popup-header {
+    display: none; /* Menyembunyikan seluruh div header */
+}
+
+/* 2. Atur padding untuk body pop-up dan tata elemen dalamnya secara vertikal */
+#searchFabOverlay .popup-body {
+    padding: 16px; /* Memberi padding di semua sisi (atas, kanan, bawah, kiri) untuk keseluruhan konten pop-up */
+    display: flex; /* Gunakan flexbox untuk menata elemen di dalam body */
+    flex-direction: column; /* **PENTING: Tata elemen dalam kolom (vertikal)** */
+    flex-grow: 1; /* Izinkan body untuk mengisi ruang vertikal yang tersedia */
+}
+
+/* 3. Pastikan container pencarian di dalamnya tidak memiliki padding ganda */
+#searchFabOverlay .sidebar-search-container {
+    padding: 0; /* Menghilangkan padding tambahan di sini karena sudah diatur di .popup-body */
+    margin-bottom: 8px; /* Tambahkan sedikit jarak di bawah kotak input sebelum hasil muncul */
+}
+
+/* KOTAK PENCARIAN FAB - PERBAIKAN UKURAN DAN POSISI (Modifikasi) */
+#searchFabOverlay .popup-container {
+    width: calc(100% - 32px); /* Lebar penuh layar mobile dikurangi margin */
+    max-width: 450px; /* Batasi lebar maksimum agar tidak terlalu besar di tablet/desktop */
+    left: 50%; /* Posisikan di tengah horizontal */
+    transform: translate(-50%, 0); /* Sesuaikan posisi tengah horizontal */
+    bottom: calc(var(--bottom-nav-height) + 75px + 8px); /* Tetap di atas nav bawah */
+    right: auto; /* Nonaktifkan right karena kita pakai left/transform */
+    z-index: 1012;
+    transition: all 0.3s ease-in-out;
+    border-radius: 12px; /* Pastikan sudut membulat */
+    display: flex; /* Gunakan flexbox untuk menata popup-header dan popup-body */
+    flex-direction: column; /* Konten di dalam container ditata dalam kolom */
+    
+    /* --- PENTING: INI UNTUK MENINGKATKAN TINGGI POPUP KESELURUHAN --- */
+    max-height: 80vh; /* Mengatur tinggi maksimum popup menjadi 80% dari tinggi viewport */
+    height: auto; /* Izinkan tinggi menyesuaikan konten jika kurang dari max-height */
+}
+
+/* Sesuaikan form pencarian agar input dan tombol tutup bisa sejajar (Modifikasi) */
+#searchFabOverlay .sidebar-search-form {
+    position: relative; /* Penting agar posisi absolute pada tombol tutup berfungsi relatif terhadap form ini */
+    display: flex; /* Menggunakan flexbox untuk menata elemen sejajar */
+    align-items: center; /* Meratakan elemen secara vertikal di tengah */
+    /* margin-bottom: 8px; Hapus ini karena sekarang margin ada di sidebar-search-container */
+}
+
+/* Sesuaikan ukuran input di dalam popup FAB (Modifikasi) */
+#searchFabOverlay .sidebar-search-input {
+    flex-grow: 1; /* Biarkan input mengambil sebagian besar ruang yang tersedia */
+    padding: 14px 16px 14px 45px; /* Padding kiri untuk ikon, padding kanan untuk tombol tutup */
+    font-size: 18px;
+    border-radius: 12px;
+    border: none; /* Pastikan border tidak ada */
+    background-color: rgba(118, 118, 128, 0.12); /* Warna latar belakang */
+    color: var(--c-text-primary); /* Warna teks */
+    outline: 0; /* Hapus outline saat fokus */
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    padding-right: 50px; /* Memberi ruang ekstra di kanan input untuk tombol tutup */
+}
+/* Gaya fokus dan dark mode untuk input */
+body.dark-mode #searchFabOverlay .sidebar-search-input {
+    background-color: rgba(118, 118, 128, 0.24);
+}
+#searchFabOverlay .sidebar-search-input:focus,
+body.dark-mode #searchFabOverlay .sidebar-search-input:focus {
+    background-color: rgba(118, 118, 128, 0.36);
+}
+#searchFabOverlay .sidebar-search-input::placeholder {
+    color: var(--c-text-secondary);
+}
+
+
+/* Sesuaikan ikon pencarian di dalam popup FAB (Modifikasi) */
+#searchFabOverlay .sidebar-search-icon {
+    position: absolute; /* Posisikan ikon secara absolut di dalam form */
+    left: 15px; /* Jarak dari kiri form */
+    top: 50%; /* Di tengah vertikal */
+    transform: translateY(-50%); /* Penyesuaian presisi untuk tengah vertikal */
+    color: var(--c-text-secondary); /* Warna ikon */
+    pointer-events: none; /* Agar klik pada ikon tembus ke input */
+    z-index: 10; /* Pastikan ikon di atas input */
+}
+#searchFabOverlay .sidebar-search-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Gaya untuk tombol tutup di samping input (BARU & MODIFIKASI) */
+#searchFabOverlay .close-popup-btn {
+    position: absolute; /* Posisikan tombol secara absolut di dalam form */
+    right: 10px; /* Jarak dari kanan form */
+    top: 50%; /* Di tengah vertikal */
+    transform: translateY(-50%); /* Penyesuaian presisi untuk tengah vertikal */
+    background: transparent;
+    border: none;
+    font-size: 2rem; /* Ukuran ikon silang */
+    line-height: 1;
+    padding: 0 5px;
+    cursor: pointer;
+    color: var(--c-text-secondary);
+    z-index: 102; /* Pastikan tombol di atas input dan ikon */
+    transition: color 0.2s ease-in-out; /* Efek hover halus */
+}
+
+#searchFabOverlay .close-popup-btn:hover {
+    color: var(--c-accent); /* Warna saat di-hover */
+}
+
+/* Sesuaikan tampilan wadah hasil pencarian live (Modifikasi) */
+#fab-live-search-results {
+    /* Hapus 'position: relative;' dan 'top: auto;' dari sini */
+    /* Karena sudah bukan anak dari form, dan popup-body sudah flex column */
+    /* Cukup pastikan ia memiliki lebar penuh dan overflow-y: auto */
+    width: 100%;
+    z-index: 101;
+    max-height: 600px; /* Tinggi maksimum daftar hasil pencarian */
+    overflow-y: auto; /* Memungkinkan scrolling jika hasil terlalu banyak */
+    margin-top: 0; /* Hapus margin-top, karena margin sudah diatur di sidebar-search-container */
+    background-color: var(--c-bg-primary);
+    box-shadow: 0 10px 15px -5px rgba(0,0,0,0.1);
+    border-top: 1px solid var(--c-border);
+    border-radius: 0 0 12px 12px;
+}
+
+/* Gaya untuk item hasil pencarian (Ini sudah bagus, tidak perlu diubah lagi) */
+#fab-live-search-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#fab-live-search-results li a {
+    display: block;
+    padding: 14px 20px;
+    color: var(--c-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--c-border);
+    font-size: 16px;
+}
+#fab-live-search-results li:last-child a {
+    border-bottom: none;
+}
+#fab-live-search-results li a:hover {
+    background-color: var(--c-bg-secondary);
+}
+#fab-live-search-results .no-results,
+#fab-live-search-results .search-loader {
+    padding: 20px;
+    text-align: center;
+    color: var(--c-text-secondary);
+    font-size: 16px;
+}
+
+.sidebar-profile-section {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: var(--c-bg-primary);
+    margin: 0 10px 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px var(--c-shadow);
+}
+
+.sidebar-profile-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-profile-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebar-profile-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--c-text-primary);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-profile-contact {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-social-section {
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+
+.social-and-stats-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--c-bg-primary);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px var(--c-shadow);
+}
+
+.stats-display {
+    display: flex;
+    align-items: center;
+    color: var(--c-text-secondary);
+    flex-shrink: 0;
+}
+
+.stats-display svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    fill: currentColor;
+}
+
+.stats-display-number {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text-primary);
+}
+
+.social-icons-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.social-link {
+    display: inline-flex;
+    color: var(--c-text-secondary);
+    transition: color 0.2s;
+}
+
+.social-link svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.social-link.whatsapp:hover { color: #25d366; }
+.social-link.twitter:hover  { color: #1da1f2; }
+.social-link.facebook:hover { color: #1877f2; }
+.social-link.telegram:hover { color: #08c;    }
+
+.sidebar-menu .menu-section {
+    margin-top: 0;
+    padding: 0 10px;
+}
+
+.sidebar-menu .menu-section .widget {
+    margin-bottom: 20px !important;
+    overflow: hidden;
+    background-color: var(--c-bg-primary);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px var(--c-shadow);
+}
+
+.sidebar-menu .menu-section .BlogArchive #ArchiveList,
+.sidebar-menu .menu-section .Label ul,
+.sidebar-menu .menu-section .LinkList ul,
+.sidebar-menu .menu-section .PopularPosts ul {
+    background-color: transparent;
+}
+
+.sidebar-menu ul li .menu-item-button,
+.sidebar-menu ul li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: var(--c-text-primary);
+    border-bottom: 1px solid var(--c-border);
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 100%;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.sidebar-menu ul li .menu-item-button:hover,
+.sidebar-menu ul li a:hover {
+    background-color: var(--c-bg-secondary);
+    color: var(--c-accent);
+    outline: 0;
+}
+
+.sidebar-menu .widget.Label ul li a.active-label {
+    background-color: var(--c-accent);
+    color: var(--c-accent-text);
+    font-weight: 500;
+}
+
+body.dark-mode .sidebar-menu .widget.Label ul li a.active-label:hover {
+    background-color: #005fcb;
+}
+
+.menu-item-icon {
+    margin-right: 12px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-item-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: currentColor;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 4. MAIN CONTENT & POST STYLES
+/*-----------------------------------------------------------------------------------*/
+.posts-wrapper-outer {
+    padding: 16px;
+}
+
+.posts-wrapper {
+    display: grid;
+    gap: 16px;
+}
+
+.index-page .posts-wrapper,
+.label-page .posts-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ios-post-card {
+    background-color: var(--c-bg-primary);
+    border-radius: 12px;
+    margin: 0;
+    box-shadow: 0 4px 12px var(--c-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ios-post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px var(--c-shadow);
+}
+
+.item-page .ios-post-card {
+    margin: 0 0 20px;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.item-page .ios-post-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.ios-post-image-link {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    background-color: var(--c-bg-secondary);
+}
+
+.ios-post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.item-page .ios-post-image-link {
+    aspect-ratio: auto;
+}
+
+.ios-post-image-link:hover .ios-post-image {
+    transform: scale(1.05);
+}
+
+.ios-post-content {
+    padding: 12px;
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ios-post-body-full {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--c-text-tertiary);
+}
+
+.ios-post-body-full img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.ios-post-body-full p {
+    margin-bottom: 1em;
+}
+
+.ios-post-body-full blockquote {
+    border-left: 3px solid var(--c-accent);
+    margin-left: 0;
+    padding-left: 15px;
+    color: var(--c-text-secondary);
+    font-style: italic;
+}
+
+.ios-post-tags {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.ios-tag {
+    font-size: 11px;
+    background-color: var(--c-accent-bg);
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--c-accent);
+}
+
+.ios-tag:hover {
+    background-color: rgba(0, 122, 255, 0.15);
+}
+
+body.dark-mode .ios-tag:hover {
+    background-color: rgba(10, 132, 255, 0.25);
+}
+
+.ios-post-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--c-text-primary);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ios-post-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.ios-post-title a:hover {
+    color: var(--c-accent);
+}
+
+.item-page .ios-post-title {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+    -webkit-line-clamp: unset;
+}
+
+.ios-post-excerpt {
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: var(--c-text-tertiary);
+    margin-bottom: 10px;
+}
+
+.ios-post-meta {
+    font-size: 12px;
+    color: var(--c-text-secondary);
+    margin-top: auto;
+    padding-top: 8px;
+}
+
+.item-page .ios-post-meta {
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.ios-post-meta a {
+    color: var(--c-text-secondary);
+    text-decoration: none;
+}
+
+.ios-post-meta a:hover {
+    color: var(--c-accent);
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 5. PAGER & FOOTER
+/*-----------------------------------------------------------------------------------*/
+#blog-pager {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    margin-top: 10px;
+}
+
+#blog-pager a,
+#blog-pager span {
+    color: var(--c-accent);
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background-color: transparent;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+}
+
+#blog-pager a:hover {
+    background-color: var(--c-accent-bg);
+    border-color: rgba(0, 122, 255, 0.3);
+}
+
+#blog-pager a:active {
+    background-color: rgba(0, 122, 255, 0.15);
+}
+
+#blog-pager span {
+    color: var(--c-text-secondary);
+    cursor: default;
+}
+
+#blog-pager .home-link {
+    flex-grow: 1;
+    text-align: center;
+    justify-content: center;
+    margin: 0 5px;
+}
+
+.ios-footer-sidebar {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 11px;
+    color: #aaa;
+    background-color: transparent;
+    margin-top: auto;
+    border-top: 1px solid var(--c-border);
+}
+
+.ios-footer-sidebar p {
+    margin: 0;
+    display: block;
+    line-height: 1.4;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 6. UTILITIES (Back to Top, FABs, Popups)
+/*-----------------------------------------------------------------------------------*/
+.back-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(0, 122, 255, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    display: none; /* Ditampilkan oleh JS */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, opacity 0.3s, right 0.3s, bottom 0.3s;
+}
+
+.back-to-top-btn:hover {
+    background-color: var(--c-accent);
+}
+
+.floating-action-button {
+    position: fixed;
+    width: 48px;
+    height: 48px;
+    right: 15px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    transition: transform 0.2s ease-in-out, bottom 0.3s, right 0.3s;
+    background-color: var(--c-accent);
+    color: #fff;
+}
+
+.back-to-top-btn svg,
+.floating-action-button svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+.floating-action-button:hover {
+    transform: scale(1.1);
+    filter: brightness(90%);
+}
+
+/* Urutan Tombol FAB (Final) */
+/* Posisi di Mobile */
+.back-to-top-btn { bottom: calc(var(--bottom-nav-height) + 15px); }
+.search-fab-btn { bottom: calc(var(--bottom-nav-height) + 75px); }
+.popular-posts-btn { bottom: calc(var(--bottom-nav-height) + 135px); }
+.toc-btn { bottom: calc(var(--bottom-nav-height) + 195px); }
+.comments-btn { bottom: calc(var(--bottom-nav-height) + 255px); }
+
+/* Saat Tombol Back-to-Top (BTT) Hilang di Mobile */
+body.btt-is-hidden .search-fab-btn { bottom: calc(var(--bottom-nav-height) + 15px); }
+body.btt-is-hidden .popular-posts-btn { bottom: calc(var(--bottom-nav-height) + 75px); }
+body.btt-is-hidden.item-page .toc-btn { bottom: calc(var(--bottom-nav-height) + 135px); }
+body.btt-is-hidden.item-page .comments-btn { bottom: calc(var(--bottom-nav-height) + 195px); }
+body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav-height) + 135px); }
+
+/* Pengaturan di Desktop */
+@media (min-width: 1024px) {
+    /* Sembunyikan FAB Pencarian di Desktop */
+    .search-fab-btn {
+        display: none !important;
+    }
+    /* Atur ulang posisi tombol lain di desktop (tanpa tombol cari) */
+    .back-to-top-btn { bottom: 20px; }
+    .popular-posts-btn { bottom: 80px; }
+    .toc-btn { bottom: 140px; }
+    .comments-btn { bottom: 200px; }
+
+    /* Shifting di Desktop (tanpa tombol cari) */
+    body.btt-is-hidden .popular-posts-btn { bottom: 20px; }
+    body.btt-is-hidden.item-page .toc-btn { bottom: 80px; }
+    body.btt-is-hidden.item-page .comments-btn { bottom: 140px; }
+    body:not(.item-page).btt-is-hidden .comments-btn { bottom: 80px; }
+}
+
+.toc-btn { display: none; }
+.item-page .toc-btn { display: flex; }
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1011;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.popup-container {
+    background-color: var(--c-bg-primary);
+    color: var(--c-text-primary);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1012;
+    border-radius: 12px;
+    max-height: 60vh;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    transition: all 0.2s ease-in-out;
+    width: calc(100% - 32px);
+    max-width: 360px;
+    right: 16px;
+    transform-origin: bottom right;
+}
+
+.popup-overlay.active .popup-container {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--c-border);
+    padding: 10px 20px;
+    flex-shrink: 0;
+}
+
+.popup-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.close-popup-btn {
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    padding: 0 5px;
+    cursor: pointer;
+    color: var(--c-text-secondary);
+}
+
+.popup-body {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 8px 0;
+}
+
+#popularPostsOverlay .popup-container { bottom: calc(var(--bottom-nav-height) + 75px + 8px); }
+#searchFabOverlay .popup-container { bottom: calc(var(--bottom-nav-height) + 75px + 8px); }
+#tocOverlay .popup-container { bottom: calc(var(--bottom-nav-height) + 135px + 8px); }
+#commentsOverlay .popup-container { bottom: calc(var(--bottom-nav-height) + 195px + 8px); }
+
+#tocPopupBody ul { list-style: none; padding: 0; margin: 0; }
+#tocPopupBody ul li a { display: block; padding: 12px 20px; text-decoration: none; color: var(--c-text-primary); border-bottom: 1px solid var(--c-border); transition: background-color 0.2s, color 0.2s; }
+#tocPopupBody ul li:last-child a { border-bottom: none; }
+#tocPopupBody ul li a:hover { background-color: var(--c-bg-secondary); color: var(--c-accent); }
+#tocPopupBody .toc-h3 a { padding-left: 35px; }
+#tocPopupBody .no-toc-message { padding: 20px; text-align: center; color: var(--c-text-secondary); }
+
+
+
+/*-----------------------------------------------------------------------------------*/
+/* 7. MOBILE SPECIFIC STYLES (Bottom Nav, Modals)
+/*-----------------------------------------------------------------------------------*/
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--bottom-nav-height);
+    background: var(--c-statusbar-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--c-statusbar-border);
+    display: none; /* Ditampilkan oleh media query */
+    align-items: stretch;
+    z-index: 1008;
+}
+
+.nav-button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--c-text-secondary);
+    font-size: 10px;
+    border: none;
+    background: transparent;
+    padding: 4px 0;
+}
+
+.nav-button.active {
+    color: var(--c-accent);
+}
+
+.nav-button svg {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 2px;
+}
+
+.mobile-modal-overlay {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 1010;
+    opacity: 0;
+    visibility: hidden;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s;
+}
+
+.mobile-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-modal-content {
+    position: fixed;
+    bottom: var(--bottom-nav-height);
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: calc(100% - 16px);
+    max-height: 60vh;
+    background: var(--c-bg-secondary);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-modal-overlay.active .mobile-modal-content {
+    transform: translate(-50%, 0);
+}
+
+.mobile-modal-header {
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.mobile-modal-body {
+    overflow-y: auto;
+    padding: 0;
+}
+
+.mobile-modal-body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-modal-body ul li a {
+    display: block;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--c-border);
+    text-decoration: none;
+    color: var(--c-text-primary);
+}
+
+.mobile-modal-body ul li:last-child a {
+    border-bottom: none;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 8. WIDGET STYLES
+/*-----------------------------------------------------------------------------------*/
+.widget {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.widget-title-in-menu {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 16px 16px 6px;
+    color: var(--c-text-secondary);
+    margin: 0;
+    background-color: transparent;
+}
+
+.sidebar-menu .widget .title,
+.sidebar-menu .widget>h2 {
+     color: var(--c-text-secondary);
+     margin: 0;
+}
+
+.widget ol,
+.widget ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.widget li {
+    border: none;
+    padding: 0;
+}
+
+.PopularPosts ul {
+     list-style: none;
+     padding: 0;
+     margin: 0;
+}
+
+.PopularPosts li {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.PopularPosts li:last-child {
+    border-bottom: none;
+}
+
+.PopularPosts a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--c-text-primary);
+    width: 100%;
+    gap: 12px;
+}
+
+.PopularPosts a:hover .item-title {
+    color: var(--c-accent);
+}
+
+.PopularPosts .item-thumbnail {
+    margin-right: 0;
+}
+
+.PopularPosts .item-thumbnail img {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.PopularPosts .item-info {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.PopularPosts .item-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--c-text-primary);
+    transition: color 0.2s;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.PopularPosts .item-snippet,
+#Stats1_sparklinespan,
+.date-header,
+.post-footer-line-1,
+.post-footer-line-2,
+.post-footer-line-3,
+.sidebar-menu .widget.Profile,
+.sidebar-menu .widget.Stats {
+    display: none !important;
+}
+
+.Stats .widget-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.Stats .counter-wrapper {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--c-text-primary);
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 9. MEDIA QUERIES (Responsive Design)
+/*-----------------------------------------------------------------------------------*/
+
+/* Tampilan Tablet (dan Ponsel besar) */
+@media (min-width: 768px) {
+    .status-bar-date {
+        display: inline;
+    }
+    .breadcrumbs-in-statusbar li {
+        max-width: 120px;
+    }
+    .breadcrumbs-in-statusbar li:last-child {
+        max-width: 180px;
+    }
+    .index-page .posts-wrapper,
+    .label-page .posts-wrapper {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tampilan Ponsel */
+@media (max-width: 1023px) {
+    body {
+        overflow-y: auto;
+        padding-bottom: var(--bottom-nav-height);
+    }
+    .main-layout-wrapper {
+        padding: 10px;
+    }
+    .status-bar-icon-button#menuToggle {
+        display: none;
+    }
+    .sidebar-menu {
+        position: fixed;
+        top: 0;
+        left: calc(-1 * var(--sidebar-width-mobile));
+        width: var(--sidebar-width-mobile);
+        height: 100vh;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 1010;
+        transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-top: var(--status-bar-height);
+        background-color: var(--c-bg-secondary);
+    }
+    .sidebar-menu.open {
+        left: 0;
+    }
+    .sidebar-content-wrapper {
+        overflow-y: auto;
+        height: 100%;
+    }
+    .sidebar-main-title-container {
+        padding-top: 0;
+    }
+    .sidebar-profile-section {
+        margin: 0;
+        border-radius: 0;
+        border-top: 1px solid var(--c-border);
+        border-bottom: 1px solid var(--c-border);
+        box-shadow: none;
+    }
+    .ios-main-content {
+        background-color: var(--c-bg-primary);
+        border-radius: 22px;
+        box-shadow: 0 6px 18px var(--c-shadow);
+        overflow: hidden;
+    }
+    .item-page .ios-post-card {
+        background-color: transparent;
+        box-shadow: none;
+    }
+    .posts-wrapper-outer {
+        padding: 0;
+    }
+    .item-page .posts-wrapper-outer {
+        padding: 16px;
+    }
+    .back-to-top-btn {
+        bottom: calc(var(--bottom-nav-height) + 20px);
+    }
+    .mobile-bottom-nav {
+        display: flex;
+    }
+}
+
+@media (max-width: 767px) {
+    #blog-pager {
+        padding: 10px 5px;
+    }
+    #blog-pager a,
+    #blog-pager span {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    #blog-pager .blog-pager-newer-link,
+    #blog-pager .blog-pager-older-link {
+        flex-basis: auto;
+        min-width: 80px;
+        justify-content: center;
+    }
+    #blog-pager .home-link {
+        font-weight: 600;
+        background-color: var(--c-accent-bg);
+    }
+}
+
+@media (min-width: 480px) {
+    .breadcrumbs-in-statusbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Tampilan Desktop */
+@media (min-width: 1024px) {
+    body {
+        overflow: hidden;
+    }
+    .ios-status-bar {
+        padding: 0 20px;
+    }
+    .status-bar-icon-button#menuToggle {
+        display: none;
+    }
+    .breadcrumbs-in-statusbar {
+        display: flex;
+        font-size: 13px;
+        text-align: left;
+        padding-left: 10px;
+        justify-content: flex-start;
+    }
+    .breadcrumbs-in-statusbar li {
+        max-width: 180px;
+    }
+    .breadcrumbs-in-statusbar li:last-child {
+        max-width: 250px;
+    }
+    .breadcrumb-post-title {
+        max-width: 20ch;
+    }
+    .status-bar-date {
+        margin-right: 10px;
+    }
+    .main-layout-wrapper {
+        display: flex;
+        height: calc(100vh - var(--status-bar-height) - 20px);
+        max-width: 1440px;
+        margin: 10px auto;
+        border-radius: 22px;
+        box-shadow: 0 6px 18px var(--c-shadow);
+        background-color: var(--c-bg-primary);
+        overflow: hidden;
+        position: relative;
+    }
+    .sidebar-menu {
+        position: static;
+        width: var(--sidebar-width-desktop);
+        background-color: var(--c-bg-secondary);
+        z-index: 1;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-shadow: 1px 0 0 rgba(60, 60, 67, 0.08);
+        padding-top: 0;
+    }
+    body.dark-mode .sidebar-menu {
+        box-shadow: 1px 0 0 rgba(84, 84, 88, 0.65);
+    }
+    .sidebar-content-wrapper {
+        overflow-y: auto;
+        flex-grow: 1;
+        padding-top: 0;
+    }
+    .ios-main-content {
+        background-color: var(--c-bg-primary);
+        flex-grow: 1;
+        min-width: 0;
+        overflow-y: auto;
+        height: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .overlay {
+        display: none !important;
+    }
+    .posts-wrapper-outer {
+        padding: 20px;
+    }
+    .index-page .posts-wrapper,
+    .label-page .posts-wrapper {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    #blog-pager {
+        margin-top: auto;
+        padding: 20px;
+        background-color: var(--c-bg-primary);
+    }
+    .mobile-modal-overlay,
+    .search-overlay-mobile {
+        display: none !important;
+    }
+    
+    .floating-action-button,
+    .back-to-top-btn { 
+        width: 50px; 
+        height: 50px; 
+        right: 20px; 
+    }
+    .back-to-top-btn { bottom: 20px; }
+    .popular-posts-btn { bottom: 80px; }
+    .toc-btn { bottom: 140px; }
+    .comments-btn { bottom: 200px; }
+    
+    body.btt-is-hidden .popular-posts-btn { bottom: 20px; }
+    body.btt-is-hidden.item-page .toc-btn { bottom: 80px; }
+    body.btt-is-hidden.item-page .comments-btn { bottom: 140px; }
+    body:not(.item-page).btt-is-hidden .comments-btn { bottom: 80px; }
+    
+    .popup-container {
+        width: 350px;
+        max-width: 350px;
+        left: auto;
+        top: auto;
+        right: calc(20px + 50px + 15px);
+    }
+    #popularPostsOverlay .popup-container { bottom: 80px; }
+    #tocOverlay .popup-container { bottom: 140px; }
+    #commentsOverlay .popup-container { bottom: 200px; }
+}
+
+/* Tampilan Desktop Sangat Lebar */
+@media (min-width: 1480px) {
+    .floating-action-button,
+    .back-to-top-btn { 
+        right: calc((100vw - 1440px) / 2 + 20px); 
+    }
+    .popup-container { 
+        right: calc((100vw - 1440px) / 2 + 20px + 50px + 15px); 
+    }
+}
+
+/*-----------------------------------------------------------------------------------*/
+/* 10. KOMENTAR STYLE (NON-FAB) */
+/*-----------------------------------------------------------------------------------*/
+
+/* Kontainer utama komentar (section id="comments") */
+#comments {
+    background-color: var(--c-bg-primary);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--c-shadow);
+    padding: 20px; /* Padding utama untuk seluruh bagian komentar */
+    margin: 20px 16px; /* Margin di luar kontainer komentar */
+    border: 1px solid var(--c-border);
+}
+
+/* Judul Komentar */
+#comments .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--c-text-primary);
+    margin-bottom: 20px;
+    text-align: left; /* Sesuaikan jika ingin center */
+}
+
+/* Container untuk daftar komentar */
+#comments-block {
+    margin-top: 20px; /* Jarak antara judul dan komentar pertama */
+}
+
+/* Gaya untuk setiap komentar individu */
+.comment {
+    display: flex; /* Menggunakan flexbox untuk mengatur avatar dan teks */
+    align-items: flex-start; /* Agar avatar sejajar di atas */
+    padding: 15px;
+    background-color: var(--c-bg-secondary); /* Latar belakang untuk setiap komentar */
+    border-radius: 10px;
+    margin-bottom: 10px; /* Jarak antar komentar */
+    border: 1px solid var(--c-border);
+}
+
+.comment:last-child {
+    margin-bottom: 0; /* Hapus margin bawah untuk komentar terakhir */
+}
+
+/* Avatar Penulis Komentar */
+.avatar-image-container {
+    flex-shrink: 0; /* Agar avatar tidak menyusut */
+    margin-right: 12px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.author-avatar {
+    width: 40px; /* Ukuran avatar */
+    height: 40px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Blok Konten Komentar (nama, teks, timestamp) */
+.comment-block {
+    flex-grow: 1; /* Biarkan blok ini mengisi sisa ruang */
+    min-width: 0; /* Penting agar teks panjang bisa wrap */
+}
+
+/* Nama Penulis Komentar */
+.comment-author {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--c-text-primary);
+    margin-bottom: 5px;
+}
+
+.comment-author a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.comment-author a:hover {
+    text-decoration: underline;
+}
+
+/* Isi Komentar */
+.comment-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--c-text-tertiary);
+    margin-bottom: 8px;
+    word-wrap: break-word; /* Penting agar teks panjang tidak keluar batas */
+}
+
+/* Footer Komentar (timestamp, delete button) */
+.comment-footer {
+    font-size: 11px;
+    color: var(--c-text-secondary);
+    display: flex;
+    justify-content: flex-end; /* Pindahkan timestamp ke kanan */
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-timestamp a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.comment-timestamp a:hover {
+    text-decoration: underline;
+}
+
+/* Tombol Hapus Komentar (jika ada) */
+.comment-delete img {
+    width: 13px; /* Ukuran ikon delete */
+    height: 13px;
+    vertical-align: middle;
+    opacity: 0.7;
+}
+
+/* Gaya untuk Formulir Komentar */
+.comment-form {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--c-border);
+}
+
+.comment-form h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--c-text-primary);
+    margin-bottom: 15px;
+}
+
+/* Mengatasi iframe komentar Blogger */
+.comment-form iframe {
+    border: 1px solid var(--c-border) !important;
+    border-radius: 10px !important;
+    background-color: var(--c-bg-secondary) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    /* Perhatian: Styling di dalam iframe sangat terbatas */
+}
+
+/* Gaya untuk tombol submit di dalam iframe (jika bisa ditargetkan) */
+/* Ini sangat tergantung pada bagaimana Blogger merender iframe. Mungkin tidak berfungsi. */
+#comment-editor-src + iframe button[type="submit"],
+.comment-actions button { /* Mungkin perlu inspeksi elemen di browser Anda untuk class yang tepat */
+    background-color: var(--c-accent) !important;
+    color: var(--c-accent-text) !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+#comment-editor-src + iframe button[type="submit"]:hover,
+.comment-actions button:hover {
+    filter: brightness(1.1);
+}
+
+/* Paging Komentar (jika ada) */
+.paging-control-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.paging-control-container a,
+.paging-control-container span {
+    background-color: var(--c-accent-bg);
+    color: var(--c-accent);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.paging-control-container a:hover {
+    background-color: rgba(0, 122, 255, 0.15);
+}
+
+.paging-control-container span {
+    color: var(--c-text-secondary);
+    cursor: default;
+    opacity: 0.7;
+}
+
+/* Media query untuk mobile agar komentar terintegrasi langsung di dalam main content */
+@media (max-width: 1023px) {
+    .item-page .ios-post-card {
+        margin-bottom: 0; /* Hapus margin bawah card postingan */
+        border-radius: 0; /* Hapus border radius jika ada di card postingan */
+        box-shadow: none; /* Hapus bayangan jika ada di card postingan */
+    }
+    #comments {
+        margin: 0; /* Hapus margin di mobile agar menempel ke postingan */
+        border-radius: 0; /* Hapus border-radius agar full width */
+        box-shadow: none; /* Hapus bayangan agar full width */
+        border-top: 1px solid var(--c-border); /* Tambahkan border atas */
+    }
+}
+        
+    ]]></b:skin>
+
+    <!-- Schema Markup untuk SEO -->
+    <b:if cond='data:view.isSingleItem'>
+        <!-- Schema Artikel -->
+        <script type='application/ld+json'>
+            {
+                &quot;@context&quot;: &quot;https://schema.org&quot;,
+                &quot;@type&quot;: &quot;Article&quot;,
+                &quot;mainEntityOfPage&quot;: {
+                    &quot;@type&quot;: &quot;WebPage&quot;,
+                    &quot;@id&quot;: &quot;<data:post.url.canonical/>&quot;
+                },
+                &quot;headline&quot;: &quot;<data:post.title.jsEscaped/>&quot;,
+                &quot;image&quot;: {
+                    &quot;@type&quot;: &quot;ImageObject&quot;,
+                    &quot;url&quot;: &quot;<b:eval expr='data:post.firstImageUrl ? resizeImage(data:post.firstImageUrl, 1200, &quot;16:9&quot;, &quot;webp&quot;) : &quot;https://placehold.co/1200x675/E0E0E0/A0A0A0?text=Gambar+Tidak+Tersedia&quot;'/>&quot;,
+                    &quot;width&quot;: 1200,
+                    &quot;height&quot;: 675
+                },
+                &quot;datePublished&quot;: &quot;<data:post.timestampISO8601/>&quot;,
+                &quot;dateModified&quot;: &quot;<data:post.lastUpdatedISO8601/>&quot;,
+                &quot;author&quot;: {
+                    &quot;@type&quot;: &quot;Person&quot;,
+                    &quot;name&quot;: &quot;<data:post.author.name.jsEscaped/>&quot;,
+                    &quot;url&quot;: &quot;<data:post.author.profileUrl/>&quot;
+                },
+                &quot;publisher&quot;: {
+                    &quot;@type&quot;: &quot;Organization&quot;,
+                    &quot;name&quot;: &quot;<data:blog.title.jsEscaped/>&quot;,
+                    &quot;logo&quot;: {
+                        &quot;@type&quot;: &quot;ImageObject&quot;,
+                        &quot;url&quot;: &quot;https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxkyx9VQS_XnoQ4VVPG2O8Ma7UC_Zxxi9fMNApFoYAl6pjn5NVey8UairJw7r-hrisAugkqFHA8PvH8YbMKF0-z59VeVKnSH38EMrrdswsw_PQwQ-chYuk3cC-0GAvtaVYo8oleoIl5K16J-ienHXmNMO4I36fydD-nEilPms9-nA8iv0adkxW3n5Su_8c/s100/Foto%20Profile.png&quot;,
+                        &quot;width&quot;: 100,
+                        &quot;height&quot;: 100
+                    }
+                },
+                &quot;description&quot;: &quot;<data:post.metaDescription.jsEscaped/>&quot;
+            }
+        </script>
+        <!-- Schema Breadcrumb -->
+        <script type='application/ld+json'>
+            {
+                &quot;@context&quot;: &quot;https://schema.org&quot;,
+                &quot;@type&quot;: &quot;BreadcrumbList&quot;,
+                &quot;itemListElement&quot;: [{
+                    &quot;@type&quot;: &quot;ListItem&quot;,
+                    &quot;position&quot;: 1,
+                    &quot;name&quot;: &quot;Beranda&quot;,
+                    &quot;item&quot;: &quot;<data:blog.homepageUrl.canonical/>&quot;
+                }
+                <b:if cond='data:post.labels and data:post.labels.first'>
+                , {
+                    &quot;@type&quot;: &quot;ListItem&quot;,
+                    &quot;position&quot;: 2,
+                    &quot;name&quot;: &quot;<data:post.labels.first.name.jsEscaped/>&quot;,
+                    &quot;item&quot;: &quot;<data:post.labels.first.url.canonical/>&quot;
+                }, {
+                    &quot;@type&quot;: &quot;ListItem&quot;,
+                    &quot;position&quot;: 3,
+                    &quot;name&quot;: &quot;<data:post.title.jsEscaped/>&quot;,
+                    &quot;item&quot;: &quot;<data:post.url.canonical/>&quot;
+                }
+                </b:if>
+                ]
+            }
+        </script>
+    </b:if>
+</head>
+
+<body expr:class='data:blog.pageType + (data:blog.searchQuery ? &quot; search-results-page&quot; : (data:blog.searchLabel ? &quot; label-page&quot; : (data:blog.pageType == &quot;item&quot; ? &quot; item-page&quot; : (data:blog.pageType == &quot;static_page&quot; ? &quot; static-page&quot; : &quot;&quot;))))'>
+
+    <!-- Reading Progress Bar -->
+    <div class='progress-container'>
+        <div class='progress-bar' id='progressBar'/>
+    </div>
+
+    <!-- iOS Style Status Bar -->
+    <div class='ios-status-bar'>
+        <div class='status-bar-left'>
+            <button aria-label='Buka Menu' class='status-bar-icon-button' id='menuToggle'>
+                <svg viewBox='0 0 13 21'>
+                    <path d='m11.5 1.5-9.5 9 9.5 9' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round'/>
+                </svg>
+                Menu
+            </button>
+        </div>
+        <b:if cond='data:blog.pageType != &quot;index&quot; or (data:blog.pageType == &quot;index&quot; and (data:blog.searchQuery or data:blog.searchLabel))'>
+            <nav aria-label='Breadcrumb' class='breadcrumbs-in-statusbar'>
+                <ol>
+                    <li><a expr:href='data:blog.homepageUrl'><data:messages.home/></a></li>
+                    <b:if cond='data:blog.pageType == &quot;static_page&quot;'>
+                        <li><span aria-current='page'><data:blog.pageName/></span></li>
+                        <b:elseif cond='data:blog.pageType == &quot;item&quot;'/>
+                        <b:if cond='data:post.labels and data:post.labels.first'>
+                            <li><a expr:href='data:post.labels.first.url'><data:post.labels.first.name/></a></li>
+                        </b:if>
+                        <li><span aria-current='page' class='breadcrumb-post-title'><data:post.title/></span></li>
+                        <b:elseif cond='data:blog.searchLabel'/>
+                        <li><data:messages.showingPostsWithLabel/> <a expr:href='data:blog.searchUrl'><data:blog.searchLabel/></a></li>
+                        <b:elseif cond='data:blog.searchQuery'/>
+                        <li><data:messages.showingResultsFor/> &quot;<data:blog.searchQuery/>&quot;</li>
+                        <b:elseif cond='data:blog.pageType == &quot;archive&quot;'/>
+                        <li><span aria-current='page'><data:blog.pageName/></span></li>
+                    </b:if>
+                </ol>
+            </nav>
+        </b:if>
+        <div class='status-bar-right'>
+            <button aria-label='Ubah Tema' class='status-bar-icon-button theme-toggle-button' id='theme-toggle'>
+                <svg class='sun-icon' viewBox='0 0 24 24'>
+                    <path d='M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 1 0-1.41 1.41l1.06 1.06a.996.996 0 1 0 1.41-1.41L5.99 4.58zM18.36 17.3a.996.996 0 1 0-1.41 1.41l1.06 1.06a.996.996 0 1 0 1.41-1.41l-1.06-1.06zm1.06-11.31a.996.996 0 1 0-1.41-1.41l-1.06 1.06a.996.996 0 1 0 1.41 1.41l1.06-1.06zM7.05 18.36a.996.996 0 1 0-1.41-1.41l-1.06 1.06a.996.996 0 1 0 1.41 1.41l1.06-1.06z'/>
+                </svg>
+                <svg class='moon-icon' viewBox='0 0 24 24'>
+                    <path d='M9.52 2.54c-4.64.97-8.27 5.15-8.51 10.01-.23 4.67 3.25 8.65 7.89 8.92.3.02.58-.13.72-.4a.62.62 0 0 0-.21-.79 5.976 5.976 0 0 1-2.5-4.88c0-3.31 2.69-6 6-6 1.95 0 3.76.93 4.88 2.5.18.26.52.35.79.21.27-.14.42-.42.4-.72-.27-4.97-4.23-8.62-8.98-8.99-.28-.02-.55.06-.77.22-.22.16-.38.41-.4.68z'/>
+                </svg>
+            </button>
+            <span class='status-bar-date' id='statusBarDate'/>
+            <span class='status-bar-time' id='statusBarTime'>02:12</span>
+        </div>
+    </div>
+
+    <!-- Main Layout Wrapper -->
+    <div class='main-layout-wrapper'>
+        <!-- Sidebar Menu -->
+        <nav class='sidebar-menu' id='slideMenu'>
+            <div class='sidebar-content-wrapper'>
+                <div class='sidebar-main-title-container'>
+                    <h1 class='sidebar-main-title'>
+                        <a expr:href='data:blog.homepageUrl'><data:blog.title/></a>
+                    </h1>
+                </div>
+                <div class='sidebar-search-container'>
+                    <form class='sidebar-search-form' expr:action='data:blog.searchUrl' method='get'>
+                        <span class='sidebar-search-icon'>
+                            <svg fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'>
+                                <path d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z' stroke-linecap='round' stroke-linejoin='round'/>
+                            </svg>
+                        </span>
+                        <input class='sidebar-search-input' name='q' placeholder='Cari' type='search'/>
+                        <div id='live-search-results' style='display:none;'/>
+                    </form>
+                </div>
+                <div class='sidebar-profile-section'>
+                    <img alt='Foto Profil' class='sidebar-profile-image' loading='lazy' src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxkyx9VQS_XnoQ4VVPG2O8Ma7UC_Zxxi9fMNApFoYAl6pjn5NVey8UairJw7r-hrisAugkqFHA8PvH8YbMKF0-z59VeVKnSH38EMrrdswsw_PQwQ-chYuk3cC-0GAvtaVYo8oleoIl5K16J-ienHXmNMO4I36fydD-nEilPms9-nA8iv0adkxW3n5Su_8c/s100/Foto%20Profile.png'/>
+                    <div class='sidebar-profile-info'>
+                        <h2 class='sidebar-profile-name'>Dede Riyaldi</h2>
+                        <p class='sidebar-profile-contact'>iyalismol@gmail.com</p>
+                    </div>
+                </div>
+                <div class='sidebar-social-section'>
+                    <div class='social-and-stats-container'>
+                        <div class='stats-display'>
+                            <svg fill='currentColor' viewBox='0 0 20 20'>
+                                <path d='M10 12a2 2 0 100-4 2 2 0 000 4z'/>
+                                <path clip-rule='evenodd' d='M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z' fill-rule='evenodd'/>
+                            </svg>
+                            <span class='stats-display-number' id='total-visitors-display'>0</span>
+                        </div>
+                        <div class='social-icons-group'>
+                            <a class='social-link whatsapp' href='#' id='social-whatsapp' target='_blank' title='Bagikan di WhatsApp'><svg viewBox='0 0 24 24'><path d='M16.75 13.96c.25.13.43.2.5.33s.07.55.07.63c0 .15-.03.28-.08.4-.1.2-.26.38-.48.5-.38.2-.85.3-1.4.3-.53 0-1.05-.08-1.55-.25-.48-.18-.95-.4-1.4-.7-.9-.6-1.64-1.3-2.2-2.14-.55-.83-.88-1.77-.88-2.8s.4-1.97 1.1-2.7c.1-.1.2-.18.32-.25.13-.07.25-.13.38-.13s.25.03.34.07c.1.05.15.14.2.3.04.14.12.32.2.5.08.2.12.34.15.45.03.1.02.2-.02.3-.05.1-.1.2-.18.25-.08.08-.15.14-.2.2-.07.05-.12.1-.15.14-.03.04-.04.08-.02.13s.2.5.58 1.05c.6.75 1.1 1.18 1.28 1.28.04.03.08.04.1.02.03-.02.4-.18.5-.22.1-.04.2-.08.3-.08.1 0 .2.02.3.1.08.08.25.4.38.62.12.2.18.34.18.42 0 .1-.02.2-.07.25zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z'/></svg></a>
+                            <a class='social-link twitter' href='#' id='social-twitter' target='_blank' title='Bagikan di Twitter'><svg viewBox='0 0 24 24'><path d='M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.52 8.52 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21c7.35 0 11.37-6.1 11.37-11.37 0-.17 0-.34-.01-.51.78-.57 1.45-1.28 1.98-2.08z'/></svg></a>
+                            <a class='social-link facebook' href='#' id='social-facebook' target='_blank' title='Bagikan di Facebook'><svg viewBox='0 0 24 24'><path d='M14 13.5h2.5l1-4H14v-2c0-1.03.27-1.73 1.76-1.73H18V2h-3.27c-3.24 0-5.47 1.99-5.47 5.66V9.5H6v4h3.26V22h4v-8.5z'/></svg></a>
+                            <a class='social-link telegram' href='#' id='social-telegram' target='_blank' title='Bagikan di Telegram'><svg viewBox='0 0 24 24'><path d='M21.8,4.1,18.9,18.4a2,2,0,0,1-3.8.3L12,14.6l-2.4,2.4a1,1,0,0,1-1.4,0L7,15.8a1,1,0,0,1-.2-1.2L8.7,13,5.1,11.8a2,2,0,0,1-1-3.2L21,2.3a2,2,0,0,1,2.2,1.8Z'/></svg></a>
+                        </div>
+                    </div>
+                </div>
+                <div class='menu-section'>
+                    <b:section class='menu-widget-section' id='menu-widgets' name='Menu Widgets (iOS)' showaddelement='yes'>
+                      <b:widget id='Profile1' locked='true' title='Profil Saya' type='Profile' version='1'>
+                        <b:widget-settings>
+                          <b:widget-setting name='showaboutme'>true</b:widget-setting>
+                          <b:widget-setting name='showlocation'>false</b:widget-setting>
+                        </b:widget-settings>
+                        <b:includable id='main'>
+                                <!-- Konten Widget Profil disembunyikan oleh CSS -->
+                            </b:includable>
+                      </b:widget>
+                      <b:widget id='Label1' locked='true' title='Kategori' type='Label' version='2' visible='true'>
+                        <b:widget-settings>
+                          <b:widget-setting name='sorting'>FREQUENCY</b:widget-setting>
+                          <b:widget-setting name='display'>LIST</b:widget-setting>
+                          <b:widget-setting name='selectedLabelsList'/>
+                          <b:widget-setting name='showType'>ALL</b:widget-setting>
+                          <b:widget-setting name='showFreqNumbers'>true</b:widget-setting>
+                        </b:widget-settings>
+                        <b:includable id='main'>
+                                <div class='widget-content'>
+                                    <ul>
+                                        <b:loop values='data:labels' var='label'>
+                                            <li>
+                                                <a expr:class='data:blog.searchLabel == data:label.name ? &quot;active-label&quot; : &quot;&quot;' expr:href='data:label.url'>
+                                                    <data:label.name/> (<data:label.count/>)
+                                                </a>
+                                            </li>
+                                        </b:loop>
+                                    </ul>
+                                </div>
+                            </b:includable>
+                        <b:includable id='cloud'>...</b:includable>
+                        <b:includable id='content'>...</b:includable>
+                        <b:includable id='list'>...</b:includable>
+                      </b:widget>
+                      <b:widget id='Stats1' locked='true' title='Total Tayangan Halaman' type='Stats' version='1'>
+                        <b:widget-settings>
+                          <b:widget-setting name='showGraphicalCounter'>false</b:widget-setting>
+                          <b:widget-setting name='showAnimatedCounter'>false</b:widget-setting>
+                          <b:widget-setting name='showSparkline'>false</b:widget-setting>
+                          <b:widget-setting name='sparklineStyle'>BLACK_TRANSPARENT</b:widget-setting>
+                          <b:widget-setting name='timeRange'>ALL_TIME</b:widget-setting>
+                        </b:widget-settings>
+                        <b:includable id='main'>
+                                <div class='widget-content'>
+                                    <span class='counter-wrapper' expr:id='data:widget.instanceId + &quot;_totalCount&quot;'>
+                                        <!-- Angka statistik akan dimasukkan di sini oleh Blogger -->
+                                    </span>
+                                </div>
+                            </b:includable>
+                      </b:widget>
+                    </b:section>
+                </div>
+                <footer class='ios-footer-sidebar'>
+                    <p>&#169; <span id='currentYearSidebar'/> <data:blog.title/>.</p>
+                    <p>Dibuat oleh Dede Riyaldi</p>
+                </footer>
+            </div>
+        </nav>
+        <div class='overlay' id='overlay'/>
+
+        <!-- Konten Utama -->
+        <main class='ios-main-content'>
+            <b:section class='main Blog' id='main' name='Main' preferred='yes' showaddelement='no'>
+              <b:widget id='Blog1' locked='true' title='Postingan Blog' type='Blog' version='2' visible='true'>
+                <b:widget-settings>
+                  <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+                  <b:widget-setting name='commentLabel'>comments</b:widget-setting>
+                  <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='showShareButtons'>false</b:widget-setting>
+                  <b:widget-setting name='showCommentLink'>true</b:widget-setting>
+                  <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='postLocationLabel'>Location:</b:widget-setting>
+                  <b:widget-setting name='showAuthor'>true</b:widget-setting>
+                  <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+                  <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='timestampLabel'>-</b:widget-setting>
+                  <b:widget-setting name='reactionsLabel'/>
+                  <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
+                  <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+                  <b:widget-setting name='showLabels'>true</b:widget-setting>
+                  <b:widget-setting name='showLocation'>false</b:widget-setting>
+                  <b:widget-setting name='postLabelsLabel'>Labels:</b:widget-setting>
+                  <b:widget-setting name='showTimestamp'>true</b:widget-setting>
+                  <b:widget-setting name='postsPerAd'>1</b:widget-setting>
+                  <b:widget-setting name='showBacklinks'>false</b:widget-setting>
+                  <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='showInlineAds'>false</b:widget-setting>
+                  <b:widget-setting name='showReactions'>false</b:widget-setting>
+                </b:widget-settings>
+                <b:includable id='main' var='this'>
+                        <div class='posts-wrapper-outer'>
+                            <div class='posts-wrapper'>
+                                <b:loop values='data:posts' var='post'>
+                                    <article class='ios-post-card' expr:data-post-id='data:post.id'>
+                                        <b:if cond='data:post.firstImageUrl'>
+                                            <a class='ios-post-image-link' expr:href='data:post.url'>
+                                                <img class='ios-post-image' expr:alt='data:post.title' expr:src='resizeImage(data:post.firstImageUrl, 720, &quot;16:9&quot;, &quot;webp&quot;)' loading='lazy'/>
+                                            </a>
+                                        </b:if>
+                                        <div class='ios-post-content'>
+                                            <b:if cond='data:post.labels and data:widgets.Blog.first.showLabels'>
+                                                <div class='ios-post-tags'>
+                                                    <b:loop index='i' values='data:post.labels' var='label'>
+                                                        <a class='ios-tag' expr:href='data:label.url' rel='tag'><data:label.name/></a>
+                                                    </b:loop>
+                                                </div>
+                                            </b:if>
+                                            <h2 class='ios-post-title'>
+                                                <a expr:href='data:post.url'><data:post.title/></a>
+                                            </h2>
+                                            <div class='ios-post-excerpt'>
+                                                <data:post.snippet/>
+                                            </div>
+                                            <p class='ios-post-meta'>
+                                                <b:if cond='data:widgets.Blog.first.showAuthor'>
+                                                    <a expr:href='data:post.authorProfileUrl' rel='author'><data:post.author/></a> &#8226;
+                                                </b:if>
+                                                <b:if cond='data:widgets.Blog.first.showTimestamp'>
+                                                    <a expr:href='data:post.url' rel='bookmark'>
+                                                        <abbr class='published' expr:title='data:post.timestampISO8601'><data:post.timestamp/></abbr>
+                                                    </a>
+                                                </b:if>
+                                            </p>
+                                            <b:if cond='data:blog.pageType == &quot;item&quot;'>
+&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; <div class='ios-post-body-full'>
+&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; <data:post.body/>
+                                              </div>
+                                          </b:if>
+									</div>
+                                  </article>
+                                  <b:if cond='data:view.isSingleItem'>
+&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; <b:include data='post' name='commentPicker'/>
+&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; </b:if>
+                                </b:loop>
+                            </div>
+                        </div>
+                        <b:include name='nextprev'/>
+                    </b:includable>
+                <b:includable id='aboutPostAuthor'>
+  <div class='author-name'>
+    <a class='g-profile' expr:href='data:post.author.profileUrl' rel='author' title='author profile'>
+      <span>
+        <data:post.author.name/>
+      </span>
+    </a>
+  </div>
+  <div>
+    <span class='author-desc'>
+      <data:post.author.aboutMe/>
+    </span>
+  </div>
+</b:includable>
+                <b:includable id='addComments'>
+  <a expr:href='data:post.commentsUrl' expr:onclick='data:post.commentsUrlOnclick'>
+    <b:message name='messages.postAComment'/>
+  </a>
+</b:includable>
+                <b:includable id='blogThisShare'>
+  <b:with value='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=270,width=475\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                <b:includable id='bylineByName' var='byline'>
+  <b:switch var='data:byline.name'>
+  <b:case value='share'/>
+    <b:include cond='data:post.shareUrl' name='postShareButtons'/>
+  <b:case value='comments'/>
+    <b:include cond='data:post.allowComments' name='postCommentsLink'/>
+  <b:case value='location'/>
+    <b:include cond='data:post.location' name='postLocation'/>
+  <b:case value='timestamp'/>
+    <b:include cond='not data:view.isPage' name='postTimestamp'/>
+  <b:case value='author'/>
+    <b:include name='postAuthor'/>
+  <b:case value='labels'/>
+    <b:include cond='data:post.labels' name='postLabels'/>
+  <b:case value='icons'/>
+    <b:include cond='data:post.emailPostUrl' name='emailPostIcon'/>
+  </b:switch>
+</b:includable>
+                <b:includable id='bylineRegion' var='regionItems'>
+  <b:loop values='data:regionItems' var='byline'>
+    <b:include data='byline' name='bylineByName'/>
+  </b:loop>
+</b:includable>
+                <b:includable id='commentAuthorAvatar'>
+  <div class='avatar-image-container'>
+    <img class='author-avatar' expr:src='data:comment.authorAvatarSrc' height='35' width='35'/>
+  </div>
+</b:includable>
+                <b:includable id='commentDeleteIcon' var='comment'>
+  <span expr:class='&quot;item-control &quot; + data:comment.adminClass'>
+    <b:if cond='data:showCmtPopup'>
+      <div class='goog-toggle-button'>
+        <div class='goog-inline-block comment-action-icon'/>
+      </div>
+    <b:else/>
+      <a class='comment-delete' expr:href='data:comment.deleteUrl' expr:title='data:messages.deleteComment'>
+        <img src='https://resources.blogblog.com/img/icon_delete13.gif'/>
+      </a>
+    </b:if>
+  </span>
+</b:includable>
+                <b:includable id='commentForm' var='post'>
+  <div class='comment-form'>
+    <a name='comment-form'/>
+    <h4 id='comment-post-message'><data:messages.postAComment/></h4>
+    <b:if cond='data:this.messages.blogComment != &quot;&quot;'>
+      <p><data:this.messages.blogComment/></p>
+    </b:if>
+    <b:include data='post' name='commentFormIframeSrc'/>
+    <iframe allowtransparency='allowtransparency' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight ?: &quot;90px&quot;' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+    <data:post.cmtfpIframe/>
+    <script type='text/javascript'>
+      BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+    </script>
+  </div>
+</b:includable>
+                <b:includable id='commentFormIframeSrc' var='post'>
+  <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+</b:includable>
+                <b:includable id='commentItem' var='comment'>
+  <div class='comment' expr:id='&quot;c&quot; + data:comment.id'>
+    <b:include cond='data:blog.enabledCommentProfileImages' name='commentAuthorAvatar'/>
+
+    <div class='comment-block'>
+      <div class='comment-author'>
+        <b:if cond='data:comment.authorUrl'>
+          <b:message name='messages.authorSaidWithLink'>
+            <b:param expr:value='data:comment.author' name='authorName'/>
+            <b:param expr:value='data:comment.authorUrl' name='authorUrl'/>
+          </b:message>
+        <b:else/>
+          <b:message name='messages.authorSaid'>
+            <b:param expr:value='data:comment.author' name='authorName'/>
+          </b:message>
+        </b:if>
+      </div>
+      <div expr:class='&quot;comment-body&quot; + (data:comment.isDeleted ? &quot; deleted&quot; : &quot;&quot;)'>
+        <data:comment.body/>
+      </div>
+      <div class='comment-footer'>
+        <span class='comment-timestamp'>
+          <a expr:href='data:comment.url' title='comment permalink'>
+            <data:comment.timestamp/>
+          </a>
+          <b:include data='comment' name='commentDeleteIcon'/>
+        </span>
+      </div>
+    </div>
+  </div>
+</b:includable>
+                <b:includable id='commentList' var='comments'>
+  <div id='comments-block'>
+    <b:loop values='data:comments' var='comment'>
+      <b:include data='comment' name='commentItem'/>
+    </b:loop>
+  </div>
+</b:includable>
+                <b:includable id='commentPicker' var='post'>
+  <b:if cond='data:post.showThreadedComments'>
+    <b:include data='post' name='threadedComments'/>
+  <b:else/>
+    <b:include data='post' name='comments'/>
+  </b:if>
+</b:includable>
+                <b:includable id='comments' var='post'>
+  <section expr:class='&quot;comments&quot; + (data:post.embedCommentForm ? &quot; embed&quot; : &quot;&quot;)' expr:data-num-comments='data:post.numberOfComments' id='comments'>
+    <a name='comments'/>
+    <b:if cond='data:post.allowComments'>
+
+      <b:include name='commentsTitle'/>
+
+      <div expr:id='data:widget.instanceId + &quot;_comments-block-wrapper&quot;'>
+        <b:include cond='data:post.comments' data='post.comments' name='commentList'/>
+      </div>
+
+      <b:if cond='data:post.commentPagingRequired'>
+        <div class='paging-control-container'>
+          <b:if cond='data:post.hasOlderLinks'>
+            <a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'>
+              <data:messages.oldest/>
+            </a>
+            <a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'>
+              <data:messages.older/>
+            </a>
+          </b:if>
+
+          <span class='comment-range-text'>
+            <data:post.commentRangeText/>
+          </span>
+
+          <b:if cond='data:post.hasNewerLinks'>
+            <a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'>
+              <data:messages.newer/>
+            </a>
+            <a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'>
+              <data:messages.newest/>
+            </a>
+          </b:if>
+        </div>
+      </b:if>
+
+      <div class='footer'>
+        <b:if cond='data:post.embedCommentForm'>
+          <b:if cond='data:post.allowNewComments'>
+            <b:include data='post' name='commentForm'/>
+          <b:else/>
+            <data:post.noNewCommentsText/>
+          </b:if>
+        <b:else/>
+          <b:if cond='data:post.allowComments'>
+            <b:include data='post' name='addComments'/>
+          </b:if>
+        </b:if>
+      </div>
+    </b:if>
+    <b:if cond='data:showCmtPopup'>
+      <div id='comment-popup'>
+        <iframe allowtransparency='allowtransparency' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+        </iframe>
+      </div>
+    </b:if>
+  </section>
+</b:includable>
+                <b:includable id='commentsLink'>
+  <a class='comment-link' expr:href='data:post.commentsUrl' expr:onclick='data:post.commentsUrlOnclick'>
+    <b:if cond='data:post.numberOfComments &gt; 0'>
+      <b:message name='messages.numberOfComments'>
+        <b:param expr:value='data:post.numberOfComments' name='numComments'/>
+      </b:message>
+    <b:else/>
+      <data:messages.postAComment/>
+    </b:if>
+  </a>
+</b:includable>
+                <b:includable id='commentsLinkIframe'>
+  <!-- G+ comments, no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='commentsTitle'>
+  <h3 class='title'><data:messages.comments/></h3>
+</b:includable>
+                <b:includable id='defaultAdUnit'>
+  <ins class='adsbygoogle' data-ad-format='auto' expr:data-ad-client='data:adClientId ?: data:blog.adsenseClientId' expr:data-ad-host='data:blog.adsenseHostId' expr:style='data:style ?: &quot;display: block;&quot;'>
+    <b:attr cond='not data:blog.analytics4' expr:value='data:blog.analyticsAccountNumber' name='data-analytics-uacct'/>
+  </ins>
+  <script>
+   (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</b:includable>
+                <b:includable id='emailPostIcon'>
+  <span class='byline post-icons'>
+    <!-- email post links -->
+    <span class='item-action'>
+      <a expr:href='data:post.emailPostUrl' expr:title='data:messages.emailPost'>
+        <b:include data='{ iconClass: &quot;touch-icon sharing-icon&quot; }' name='emailIcon'/>
+      </a>
+    </span>
+  </span>
+</b:includable>
+                <b:includable id='facebookShare'>
+  <b:with value='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=430,width=640\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                <b:includable id='feedLinks'>
+  <b:if cond='!data:view.isPost'> <!-- Blog feed links -->
+    <b:if cond='data:feedLinks'>
+      <div class='blog-feeds'>
+        <b:include data='feedLinks' name='feedLinksBody'/>
+      </div>
+    </b:if>
+  <b:else/> <!--Post feed links -->
+    <div class='post-feeds'>
+      <b:loop values='data:posts' var='post'>
+        <b:if cond='data:post.allowComments and data:post.feedLinks'>
+          <b:include data='post.feedLinks' name='feedLinksBody'/>
+        </b:if>
+      </b:loop>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='feedLinksBody' var='links'>
+  <div class='feed-links'>
+  <data:messages.subscribeTo/>
+  <b:loop values='data:links' var='f'>
+     <a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (<data:f.feedType/>)</a>
+  </b:loop>
+  </div>
+</b:includable>
+                <b:includable id='footerBylines'>
+  <b:if cond='data:widgets.Blog.first.footerBylines'>
+    <b:loop index='i' values='data:widgets.Blog.first.footerBylines' var='region'>
+      <b:if cond='not data:region.items.empty'>
+        <div expr:class='&quot;post-footer-line post-footer-line-&quot; + (data:i + 1)'>
+          <b:with value='&quot;footer-&quot; + (data:i + 1)' var='regionName'>
+            <b:include data='region.items' name='bylineRegion'/>
+          </b:with>
+        </div>
+      </b:if>
+    </b:loop>
+  </b:if>
+</b:includable>
+                <b:includable id='googlePlusShare'>
+</b:includable>
+                <b:includable id='headerByline'>
+  <b:if cond='data:widgets.Blog.first.headerByline'>
+    <div class='post-header'>
+      <div class='post-header-line-1'>
+        <b:with value='&quot;header-1&quot;' var='regionName'>
+          <b:include data='data:widgets.Blog.first.headerByline.items' name='bylineRegion'/>
+        </b:with>
+      </div>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='homePageLink'>
+  <a class='home-link' expr:href='data:blog.homepageUrl'>
+    <data:messages.home/>
+  </a>
+</b:includable>
+                <b:includable id='iframeComments' var='post'>
+  <!-- G+ comments, no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='inlineAd' var='post'>
+  <b:if cond='!data:view.isPreview'>
+    <b:if cond='data:this.adCode or data:this.adClientId or data:blog.adsenseClientId'>
+      <!-- Ad -->
+      <div class='inline-ad'>
+        <b:if cond='data:this.adCode != &quot;&quot;'>
+          <data:this.adCode/>
+        <b:else/>
+          <b:include cond='data:this.adClientId or data:blog.adsenseClientId' name='defaultAdUnit'/>
+        </b:if>
+      </div>
+    </b:if>
+  <b:else/>
+    <div class='inline-ad'>
+      <div class='inline-ad-placeholder'>
+        <span><b:message name='messages.adsGoHere'/></span>
+      </div>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='linkShare'>
+  <b:with value='&quot;window.prompt(\&quot;Copy to clipboard: Ctrl+C, Enter\&quot;, \&quot;&quot; + data:originalUrl + &quot;\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                <b:includable id='nextPageLink'>
+  <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:messages.olderPosts'>
+    <data:messages.olderPosts/>
+  </a>
+</b:includable>
+                <b:includable id='nextprev'>
+                        <div id='blog-pager'>
+                            <b:if cond='data:newerPageUrl'>
+                                <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:title='data:newerPageTitle'>&#8592; Baru</a>
+                                <b:else/>
+                                <span class='blog-pager-newer-link' style='opacity:0.5; pointer-events:none;'>&#8592; Baru</span>
+                            </b:if>
+                            <b:if cond='data:blog.homepageUrl and data:blog.url != data:blog.homepageUrl'>
+                                <a class='home-link' expr:href='data:blog.homepageUrl'><data:messages.home/></a>
+                                <b:else/>
+                                <span class='home-link' style='opacity:0.5; pointer-events:none;'><data:messages.home/></span>
+                            </b:if>
+                            <b:if cond='data:olderPageUrl'>
+                                <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:title='data:olderPageTitle'>Lama &#8594;</a>
+                                <b:else/>
+                                <span class='blog-pager-older-link' style='opacity:0.5; pointer-events:none;'>Lama &#8594;</span>
+                            </b:if>
+                        </div>
+                    </b:includable>
+                <b:includable id='otherSharingButton'>
+  <span class='sharing-platform-button sharing-element-other' expr:aria-label='data:messages.shareToOtherApps.escaped' expr:data-url='data:originalUrl' expr:title='data:messages.shareToOtherApps.escaped' role='menuitem' tabindex='-1'>
+    <b:with value='{key: &quot;sharingOther&quot;}' var='platform'>
+      <b:include name='sharingPlatformIcon'/>
+    </b:with>
+    <span class='platform-sharing-text'><data:messages.shareOtherApps.escaped/></span>
+  </span>
+</b:includable>
+                <b:includable id='platformShare'>
+  <a expr:class='&quot;goog-inline-block sharing-&quot; + data:platform.key' expr:data-url='data:originalUrl' expr:href='data:shareUrl + &quot;&amp;target=&quot; + data:platform.target' expr:onclick='data:onclick ? data:onclick : &quot;&quot;' expr:title='data:platform.shareMessage' target='_blank'>
+    <span class='share-button-link-text'>
+      <data:platform.shareMessage/>
+    </span>
+  </a>
+</b:includable>
+                <b:includable id='post' var='post'>
+  <div class='post'>
+    <b:include data='post' name='postMeta'/>
+    <b:include data='post' name='postTitle'/>
+    <b:include name='headerByline'/>
+    <b:if cond='data:view.isSingleItem'>
+      <b:include data='post' name='postBody'/>
+    <b:else/>
+      <b:include data='post' name='postBodySnippet'/>
+      <b:include data='post' name='postJumpLink'/>
+    </b:if>
+    <b:include data='post' name='postFooter'/>
+  </div>
+</b:includable>
+                <b:includable id='postAuthor'>
+  <span class='byline post-author vcard'>
+    <span class='post-author-label'>
+      <data:byline.label/>
+    </span>
+    <span class='fn'>
+      <b:if cond='data:post.author.profileUrl'>
+        <meta expr:content='data:post.author.profileUrl'/>
+        <a class='g-profile' expr:href='data:post.author.profileUrl' rel='author' title='author profile'>
+          <span><data:post.author.name/></span>
+        </a>
+      <b:else/>
+        <span><data:post.author.name/></span>
+      </b:if>
+    </span>
+  </span>
+</b:includable>
+                <b:includable id='postBody' var='post'>
+  <!-- If metaDescription is empty, use the post body as the schema.org description too, for G+/FB snippeting. -->
+  <div class='post-body entry-content float-container' expr:id='&quot;post-body-&quot; + data:post.id'>
+    <data:post.body/>
+  </div>
+</b:includable>
+                <b:includable id='postBodySnippet' var='post'>
+  <b:include data='post' name='postBody'/>
+</b:includable>
+                <b:includable id='postCommentsAndAd' var='post'>
+  <article class='post-outer-container'>
+    <!-- Post title and body -->
+    <div class='post-outer'>
+      <b:include data='post' name='post'/>
+    </div>
+
+    <!-- Comments -->
+    <b:include cond='data:view.isSingleItem' data='post' name='commentPicker'/>
+
+    <!-- Show ad inside post container, after comments, if single item. -->
+    <b:include cond='data:view.isSingleItem and data:post.includeAd' data='post' name='inlineAd'/>
+  </article>
+
+  <!-- Show ad outside post container (between posts) for feed pages. -->
+  <b:include cond='data:view.isMultipleItems and data:post.includeAd' data='post' name='inlineAd'/>
+</b:includable>
+                <b:includable id='postCommentsLink'>
+  <b:if cond='data:view.isMultipleItems'>
+    <span class='byline post-comment-link container'>
+      <b:include cond='data:post.commentSource != 1' name='commentsLink'/>
+    </span>
+  </b:if>
+</b:includable>
+                <b:includable id='postFooter' var='post'>
+  <div class='post-footer'>
+    <b:include name='footerBylines'/>
+    <b:include data='post' name='postFooterAuthorProfile'/>
+  </div>
+</b:includable>
+                <b:includable id='postFooterAuthorProfile' var='post'>
+  <b:if cond='data:post.author.aboutMe and data:view.isPost'>
+    <div class='author-profile'>
+      <b:if cond='data:post.author.authorPhoto.url'>
+        <img class='author-image' expr:src='data:post.author.authorPhoto.url' width='50px'/>
+        <div class='author-about'>
+          <b:include data='post' name='aboutPostAuthor'/>
+        </div>
+      <b:else/>
+        <b:include data='post' name='aboutPostAuthor'/>
+      </b:if>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='postHeader' var='post'>
+  <b:include name='headerByline'/>
+</b:includable>
+                <b:includable id='postJumpLink' var='post'>
+  <div class='jump-link flat-button'>
+    <a expr:href='data:post.url fragment &quot;more&quot;' expr:title='data:post.title'>
+      <b:eval expr='data:blog.jumpLinkMessage'/>
+    </a>
+  </div>
+</b:includable>
+                <b:includable id='postLabels'>
+  <span class='byline post-labels'>
+    <span class='byline-label'><data:byline.label/></span>
+    <b:loop index='i' values='data:post.labels' var='label'>
+      <a expr:href='data:label.url' rel='tag'>
+        <data:label.name/>
+      </a>
+    </b:loop>
+  </span>
+</b:includable>
+                <b:includable id='postLocation'>
+  <span class='byline post-location'>
+    <data:byline.label/>
+    <a expr:href='data:post.location.mapsUrl' target='_blank'><data:post.location.name/></a>
+  </span>
+</b:includable>
+                <b:includable id='postMeta' var='post'>
+  <b:include data='post' name='postMetadataJSON'/>
+</b:includable>
+                <b:includable id='postMetadataJSONImage'>
+  &quot;image&quot;: {
+    &quot;@type&quot;: &quot;ImageObject&quot;,
+    <b:if cond='data:post.featuredImage.isResizable'>
+    &quot;url&quot;: &quot;<b:eval expr='resizeImage(data:post.featuredImage, 1200, &quot;1200:630&quot;)'/>&quot;,
+    &quot;height&quot;: 630,
+    &quot;width&quot;: 1200
+    <b:else/>
+    &quot;url&quot;: &quot;https://blogger.googleusercontent.com/img/b/U2hvZWJveA/AVvXsEgfMvYAhAbdHksiBA24JKmb2Tav6K0GviwztID3Cq4VpV96HaJfy0viIu8z1SSw_G9n5FQHZWSRao61M3e58ImahqBtr7LiOUS6m_w59IvDYwjmMcbq3fKW4JSbacqkbxTo8B90dWp0Cese92xfLMPe_tg11g/w1200/&quot;,
+    &quot;height&quot;: 348,
+    &quot;width&quot;: 1200
+    </b:if>
+  },
+</b:includable>
+                <b:includable id='postMetadataJSONPublisher'>
+ &quot;publisher&quot;: {
+    &quot;@type&quot;: &quot;Organization&quot;,
+    &quot;name&quot;: &quot;Blogger&quot;,
+    &quot;logo&quot;: {
+      &quot;@type&quot;: &quot;ImageObject&quot;,
+      &quot;url&quot;: &quot;https://blogger.googleusercontent.com/img/b/U2hvZWJveA/AVvXsEgfMvYAhAbdHksiBA24JKmb2Tav6K0GviwztID3Cq4VpV96HaJfy0viIu8z1SSw_G9n5FQHZWSRao61M3e58ImahqBtr7LiOUS6m_w59IvDYwjmMcbq3fKW4JSbacqkbxTo8B90dWp0Cese92xfLMPe_tg11g/h60/&quot;,
+      &quot;width&quot;: 206,
+      &quot;height&quot;: 60
+    }
+  },
+</b:includable>
+                <b:includable id='postPagination'>
+  <div class='blog-pager container' id='blog-pager'>
+    <b:include cond='data:newerPageUrl' name='previousPageLink'/>
+    <b:include cond='data:olderPageUrl' name='nextPageLink'/>
+    <b:include cond='data:view.url != data:blog.homepageUrl' name='homePageLink'/>
+  </div>
+</b:includable>
+                <b:includable id='postReactions'>
+  <!-- Reaction feature no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='postShareButtons'>
+  <div class='byline post-share-buttons goog-inline-block'>
+    <b:with value='data:sharingId ?: ((data:widget.instanceId ?: &quot;sharing&quot;) + &quot;-&quot; + (data:regionName ?: &quot;byline&quot;) + &quot;-&quot; + data:post.id)' var='sharingId'>
+      <!-- Note: 'sharingButtons' includable is from the default Sharing widget markup. -->
+      <b:include data='{                                                sharingId: data:sharingId,                                                originalUrl: data:post.url,                                                platforms: data:this.sharing.platforms,                                                shareUrl: data:post.shareUrl,                                                shareTitle: data:post.title,                                              }' name='sharingButtons'/>
+    </b:with>
+  </div>
+</b:includable>
+                <b:includable id='postTimestamp'>
+  <span class='byline post-timestamp'>
+    <data:byline.label/>
+    <b:if cond='data:post.url'>
+      <meta expr:content='data:post.url.canonical'/>
+      <a class='timestamp-link' expr:href='data:post.url' rel='bookmark' title='permanent link'>
+        <time class='published' expr:datetime='data:post.date.iso8601' expr:title='data:post.date.iso8601'>
+          <data:post.date/>
+        </time>
+      </a>
+    </b:if>
+  </span>
+</b:includable>
+                <b:includable id='postTitle' var='post'>
+  <a expr:name='data:post.id'/>
+  <b:if cond='data:post.title != &quot;&quot;'>
+    <h3 class='post-title entry-title'>
+      <b:if cond='data:post.link or (data:post.url and data:view.url != data:post.url)'>
+        <a expr:href='data:post.link ?: data:post.url'><data:post.title/></a>
+      <b:else/>
+        <data:post.title/>
+      </b:if>
+    </h3>
+  </b:if>
+</b:includable>
+                <b:includable id='previousPageLink'>
+  <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:messages.newerPosts'>
+    <data:messages.newerPosts/>
+  </a>
+</b:includable>
+                <b:includable id='sharingButton'>
+  <span expr:aria-label='data:platform.shareMessage' expr:class='&quot;sharing-platform-button sharing-element-&quot; + data:platform.key' expr:data-href='data:shareUrl + &quot;&amp;target=&quot; + data:platform.target' expr:data-url='data:originalUrl' expr:title='data:platform.shareMessage' role='menuitem' tabindex='-1'>
+    <b:include name='sharingPlatformIcon'/>
+    <span class='platform-sharing-text'><data:platform.name/></span>
+  </span>
+</b:includable>
+                <b:includable id='sharingButtonContent'>
+  <div class='flat-icon-button ripple'>
+    <b:include name='shareIcon'/>
+  </div>
+</b:includable>
+                <b:includable id='sharingButtons'>
+  <div class='sharing' expr:aria-owns='&quot;sharing-popup-&quot; + data:sharingId' expr:data-title='data:shareTitle'>
+    <button class='sharing-button touch-icon-button' expr:aria-controls='&quot;sharing-popup-&quot; + data:sharingId' expr:aria-label='data:messages.share.escaped' expr:id='&quot;sharing-button-&quot; + data:sharingId' role='button'>
+      <b:include name='sharingButtonContent'/>
+    </button>
+    <b:include name='sharingButtonsMenu'/>
+  </div>
+</b:includable>
+                <b:includable id='sharingButtonsMenu'>
+  <div class='share-buttons-container'>
+    <ul aria-hidden='true' class='share-buttons hidden' expr:aria-label='data:messages.share.escaped' expr:id='&quot;sharing-popup-&quot; + data:sharingId' role='menu'>
+      <b:loop values='(data:platforms ?: data:blog.sharing.platforms) filter (p =&gt; p.key not in {&quot;blogThis&quot;})' var='platform'>
+        <li>
+          <b:include name='sharingButton'/>
+        </li>
+      </b:loop>
+      <li aria-hidden='true' class='hidden'>
+        <b:include name='otherSharingButton'/>
+      </li>
+    </ul>
+  </div>
+</b:includable>
+                <b:includable id='sharingPlatformIcon'>
+  <b:include data='{ iconClass: (&quot;touch-icon sharing-&quot; + data:platform.key) }' expr:name='data:platform.key + &quot;Icon&quot;'/>
+</b:includable>
+                <b:includable id='threadedCommentForm' var='post'>
+  <div class='comment-form'>
+    <a name='comment-form'/>
+    <h4 id='comment-post-message'><data:messages.postAComment/></h4>
+    <b:if cond='data:this.messages.blogComment != &quot;&quot;'>
+      <p><data:this.messages.blogComment/></p>
+    </b:if>
+    <b:include data='post' name='commentFormIframeSrc'/>
+    <iframe allowtransparency='allowtransparency' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight ?: &quot;90px&quot;' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+    <data:post.cmtfpIframe/>
+    <script type='text/javascript'>
+      BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+    </script>
+  </div>
+</b:includable>
+                <b:includable id='threadedCommentJs' var='post'>
+  <script async='async' expr:src='data:post.commentSrc' type='text/javascript'/>
+  <b:template-script inline='true' name='threaded_comments'/>
+  <script type='text/javascript'>
+    blogger.widgets.blog.initThreadedComments(
+        <data:post.commentJso/>,
+        <data:post.commentMsgs/>,
+        <data:post.commentConfig/>);
+  </script>
+</b:includable>
+                <b:includable id='threadedComments' var='post'>
+  <section class='comments threaded' expr:data-embed='data:post.embedCommentForm' expr:data-num-comments='data:post.numberOfComments' id='comments'>
+    <a name='comments'/>
+
+    <b:include name='commentsTitle'/>
+
+    <div class='comments-content'>
+      <b:if cond='data:post.embedCommentForm'>
+        <b:include data='post' name='threadedCommentJs'/>
+      </b:if>
+      <div id='comment-holder'>
+         <data:post.commentHtml/>
+      </div>
+    </div>
+
+    <p class='comment-footer'>
+      <b:if cond='data:post.allowNewComments'>
+        <b:include data='post' name='threadedCommentForm'/>
+      <b:else/>
+        <data:post.noNewCommentsText/>
+      </b:if>
+      <b:if cond='data:post.showManageComments'>
+        <b:include data='post' name='manageComments'/>
+      </b:if>
+    </p>
+
+    <b:if cond='data:showCmtPopup'>
+      <div id='comment-popup'>
+        <iframe allowtransparency='allowtransparency' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+        </iframe>
+      </div>
+    </b:if>
+  </section>
+</b:includable>
+                <b:includable id='tooltipCss'>
+  <!-- LINT.IfChange -->
+  <style>
+    .post-body a.b-tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .post-body a.b-tooltip-container .b-tooltip {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-20%, 1px);
+      visibility: hidden;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .post-body a.b-tooltip-container .b-tooltip iframe {
+      width: 200px;
+      height: 198px;
+      max-width: none;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .post-body a.b-tooltip-container:hover .b-tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+  <!-- LINT.ThenChange(//depot/google3/java/com/google/blogger/b2/layouts/widgets/v2-style.css) -->
+</b:includable>
+              </b:widget>
+            </b:section>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class='mobile-bottom-nav' id='mobileBottomNav'>
+        <button class='nav-button' id='nav-menu'>
+            <svg fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'>
+                <path d='M4 6h16M4 12h16M4 18h16'/>
+            </svg>
+            <span class='nav-label'>Menu</span>
+        </button>
+        <a class='nav-button' expr:href='data:blog.homepageUrl' id='nav-home'>
+            <svg fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'>
+                <path d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/>
+                <path d='M9 22V12h6v10'/>
+            </svg>
+            <span class='nav-label'>Beranda</span>
+        </a>
+        <button class='nav-button' id='nav-categories'>
+            <svg fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'>
+                <path d='M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z'/>
+            </svg>
+            <span class='nav-label'>Kategori</span>
+        </button>
+        <button class='nav-button' id='nav-theme-toggle'>
+            <svg class='sun-icon' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' viewBox='0 0 24 24'>
+                <circle cx='12' cy='12' r='5'/>
+                <path d='M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42'/>
+            </svg>
+            <svg class='moon-icon' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' style='display:none;' viewBox='0 0 24 24'>
+                <path d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'/>
+            </svg>
+            <span class='nav-label'>Tema</span>
+        </button>
+    </div>
+
+    <!-- Mobile Modals -->
+    <div class='mobile-modal-overlay' id='categoriesModalOverlay'>
+        <div class='mobile-modal-content'>
+            <div class='mobile-modal-header'>Kategori</div>
+            <div class='mobile-modal-body' id='categoriesModalBody'/>
+        </div>
+    </div>
+    <div class='overlay' id='overlayMobile'/>
+
+    <!-- Floating Action Buttons & Popups -->
+    <button aria-label='Kembali ke atas' class='back-to-top-btn' id='backToTopBtn' title='Kembali ke atas'>
+        <svg fill='currentColor' viewBox='0 0 24 24'>
+            <path d='M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z'/>
+        </svg>
+    </button>
+  	<button class='floating-action-button search-fab-btn' id='toggleSearchBtn' title='Cari'>
+      <svg viewBox='0 0 24 24'>
+        <path d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/>
+      </svg>
+    </button>
+    <button class='floating-action-button popular-posts-btn' id='togglePopularBtn' title='Postingan Populer'>
+        <svg viewBox='0 0 24 24'>
+            <path d='M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z'/>
+        </svg>
+    </button>
+    <button class='floating-action-button toc-btn' id='toggleTocBtn' title='Daftar Isi'>
+        <svg viewBox='0 0 24 24'>
+            <path d='M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z'/>
+        </svg>
+    </button>
+  <div class='popup-overlay' id='searchFabOverlay'>
+  <div class='popup-container'>
+    <div class='popup-header'>
+      <h3/> </div>
+    <div class='popup-body'>
+      <div class='sidebar-search-container'>
+        <form class='sidebar-search-form' expr:action='data:blog.searchUrl' method='get' onsubmit='return this.q.value.trim() !== &quot;&quot;'>
+          <span class='sidebar-search-icon'>
+            <svg fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'>
+              <path d='m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z' stroke-linecap='round' stroke-linejoin='round'/>
+            </svg>
+          </span>
+          <input aria-label='Cari' class='sidebar-search-input' id='fab-search-input' name='q' placeholder='Cari artikel...' type='search'/>
+          <button class='close-popup-btn' id='closeSearchFabBtn'>&#215;</button> 
+        </form>
+      </div>
+      <div id='fab-live-search-results' style='display:none;'/> 
+    </div>
+  </div>
+</div>
+    <div class='popup-overlay' id='tocOverlay'>
+        <div class='popup-container'>
+            <div class='popup-header'>
+                <h3>Daftar Isi</h3>
+                <button class='close-popup-btn' id='closeTocBtn'>&#215;</button>
+            </div>
+            <div class='popup-body' id='tocPopupBody'/>
+        </div>
+    </div>
+    <div class='popup-overlay' id='popularPostsOverlay'>
+        <div class='popup-container'>
+            <div class='popup-header'>
+                <h3>Populer Bulan Ini</h3>
+                <button class='close-popup-btn' id='closePopularBtn'>&#215;</button>
+            </div>
+            <div class='popup-body'>
+                <b:section class='popular-posts-popup-widget' id='popular-posts-popup' showaddelement='no'>
+                  <b:widget id='PopularPosts2' locked='true' title='Postingan Populer' type='PopularPosts' version='2' visible='true'>
+                    <b:widget-settings>
+                      <b:widget-setting name='numItemsToShow'>3</b:widget-setting>
+                      <b:widget-setting name='showThumbnails'>true</b:widget-setting>
+                      <b:widget-setting name='showSnippets'>true</b:widget-setting>
+                      <b:widget-setting name='timeRange'>LAST_MONTH</b:widget-setting>
+                    </b:widget-settings>
+                    <b:includable id='main'>
+                            <b:if cond='data:posts'>
+                                <div class='widget-content popular-posts'>
+                                    <ul>
+                                        <b:loop values='data:posts' var='post'>
+                                            <li>
+                                                <a expr:href='data:post.url'>
+                                                    <div class='item-thumbnail'>
+                                                        <b:with value='(data:post.featuredImage and data:post.featuredImage.isResizable) ? resizeImage(data:post.featuredImage, 72, &quot;1:1&quot;, &quot;webp&quot;) : (data:post.thumbnail ? data:post.thumbnail : &quot;https://placehold.co/72x72/E0E0E0/A0A0A0?text=N/A&quot;)' var='image'>
+                                                            <img expr:src='data:image' loading='lazy'/>
+                                                        </b:with>
+                                                    </div>
+                                                    <div class='item-info'>
+                                                        <div class='item-title'><data:post.title/></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </b:loop>
+                                    </ul>
+                                </div>
+                            </b:if>
+                        </b:includable>
+                    <b:includable id='blogThisShare'>
+  <b:with value='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=270,width=475\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                    <b:includable id='bylineByName' var='byline'>
+  <b:switch var='data:byline.name'>
+  <b:case value='share'/>
+    <b:include cond='data:post.shareUrl' name='postShareButtons'/>
+  <b:case value='comments'/>
+    <b:include cond='data:post.allowComments' name='postCommentsLink'/>
+  <b:case value='location'/>
+    <b:include cond='data:post.location' name='postLocation'/>
+  <b:case value='timestamp'/>
+    <b:include cond='not data:view.isPage' name='postTimestamp'/>
+  <b:case value='author'/>
+    <b:include name='postAuthor'/>
+  <b:case value='labels'/>
+    <b:include cond='data:post.labels' name='postLabels'/>
+  <b:case value='icons'/>
+    <b:include cond='data:post.emailPostUrl' name='emailPostIcon'/>
+  </b:switch>
+</b:includable>
+                    <b:includable id='bylineRegion' var='regionItems'>
+  <b:loop values='data:regionItems' var='byline'>
+    <b:include data='byline' name='bylineByName'/>
+  </b:loop>
+</b:includable>
+                    <b:includable id='commentsLink'>
+  <a class='comment-link' expr:href='data:post.commentsUrl' expr:onclick='data:post.commentsUrlOnclick'>
+    <b:if cond='data:post.numberOfComments &gt; 0'>
+      <b:message name='messages.numberOfComments'>
+        <b:param expr:value='data:post.numberOfComments' name='numComments'/>
+      </b:message>
+    <b:else/>
+      <data:messages.postAComment/>
+    </b:if>
+  </a>
+</b:includable>
+                    <b:includable id='commentsLinkIframe'>
+  <!-- G+ comments, no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                    <b:includable id='emailPostIcon'>
+  <span class='byline post-icons'>
+    <!-- email post links -->
+    <span class='item-action'>
+      <a expr:href='data:post.emailPostUrl' expr:title='data:messages.emailPost'>
+        <b:include data='{ iconClass: &quot;touch-icon sharing-icon&quot; }' name='emailIcon'/>
+      </a>
+    </span>
+  </span>
+</b:includable>
+                    <b:includable id='facebookShare'>
+  <b:with value='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=430,width=640\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                    <b:includable id='footerBylines'>
+  <b:if cond='data:widgets.Blog.first.footerBylines'>
+    <b:loop index='i' values='data:widgets.Blog.first.footerBylines' var='region'>
+      <b:if cond='not data:region.items.empty'>
+        <div expr:class='&quot;post-footer-line post-footer-line-&quot; + (data:i + 1)'>
+          <b:with value='&quot;footer-&quot; + (data:i + 1)' var='regionName'>
+            <b:include data='region.items' name='bylineRegion'/>
+          </b:with>
+        </div>
+      </b:if>
+    </b:loop>
+  </b:if>
+</b:includable>
+                    <b:includable id='googlePlusShare'>
+</b:includable>
+                    <b:includable id='headerByline'>
+  <b:if cond='data:widgets.Blog.first.headerByline'>
+    <div class='post-header'>
+      <div class='post-header-line-1'>
+        <b:with value='&quot;header-1&quot;' var='regionName'>
+          <b:include data='data:widgets.Blog.first.headerByline.items' name='bylineRegion'/>
+        </b:with>
+      </div>
+    </div>
+  </b:if>
+</b:includable>
+                    <b:includable id='linkShare'>
+  <b:with value='&quot;window.prompt(\&quot;Copy to clipboard: Ctrl+C, Enter\&quot;, \&quot;&quot; + data:originalUrl + &quot;\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                    <b:includable id='otherSharingButton'>
+  <span class='sharing-platform-button sharing-element-other' expr:aria-label='data:messages.shareToOtherApps.escaped' expr:data-url='data:originalUrl' expr:title='data:messages.shareToOtherApps.escaped' role='menuitem' tabindex='-1'>
+    <b:with value='{key: &quot;sharingOther&quot;}' var='platform'>
+      <b:include name='sharingPlatformIcon'/>
+    </b:with>
+    <span class='platform-sharing-text'><data:messages.shareOtherApps.escaped/></span>
+  </span>
+</b:includable>
+                    <b:includable id='platformShare'>
+  <a expr:class='&quot;goog-inline-block sharing-&quot; + data:platform.key' expr:data-url='data:originalUrl' expr:href='data:shareUrl + &quot;&amp;target=&quot; + data:platform.target' expr:onclick='data:onclick ? data:onclick : &quot;&quot;' expr:title='data:platform.shareMessage' target='_blank'>
+    <span class='share-button-link-text'>
+      <data:platform.shareMessage/>
+    </span>
+  </a>
+</b:includable>
+                    <b:includable id='postAuthor'>
+  <span class='byline post-author vcard'>
+    <span class='post-author-label'>
+      <data:byline.label/>
+    </span>
+    <span class='fn'>
+      <b:if cond='data:post.author.profileUrl'>
+        <meta expr:content='data:post.author.profileUrl'/>
+        <a class='g-profile' expr:href='data:post.author.profileUrl' rel='author' title='author profile'>
+          <span><data:post.author.name/></span>
+        </a>
+      <b:else/>
+        <span><data:post.author.name/></span>
+      </b:if>
+    </span>
+  </span>
+</b:includable>
+                    <b:includable id='postCommentsLink'>
+  <span class='byline post-comment-link container'>
+    <b:include cond='data:post.commentSource != 1' name='commentsLink'/>
+  </span>
+</b:includable>
+                    <b:includable id='postJumpLink' var='post'>
+  <div class='jump-link flat-button'>
+    <a expr:href='data:post.url fragment &quot;more&quot;' expr:title='data:post.title'>
+      <b:eval expr='data:blog.jumpLinkMessage'/>
+    </a>
+  </div>
+</b:includable>
+                    <b:includable id='postLabels'>
+  <span class='byline post-labels'>
+    <span class='byline-label'><data:byline.label/></span>
+    <b:loop index='i' values='data:post.labels' var='label'>
+      <a expr:href='data:label.url' rel='tag'>
+        <data:label.name/>
+      </a>
+    </b:loop>
+  </span>
+</b:includable>
+                    <b:includable id='postLocation'>
+  <span class='byline post-location'>
+    <data:byline.label/>
+    <a expr:href='data:post.location.mapsUrl' target='_blank'><data:post.location.name/></a>
+  </span>
+</b:includable>
+                    <b:includable id='postReactions'>
+  <!-- Reaction feature no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                    <b:includable id='postShareButtons'>
+  <div class='byline post-share-buttons goog-inline-block'>
+    <b:with value='data:sharingId ?: ((data:widget.instanceId ?: &quot;sharing&quot;) + &quot;-&quot; + (data:regionName ?: &quot;byline&quot;) + &quot;-&quot; + data:post.id)' var='sharingId'>
+      <!-- Note: 'sharingButtons' includable is from the default Sharing widget markup. -->
+      <b:include data='{                                                sharingId: data:sharingId,                                                originalUrl: data:post.url,                                                platforms: data:this.sharing.platforms,                                                shareUrl: data:post.shareUrl,                                                shareTitle: data:post.title,                                              }' name='sharingButtons'/>
+    </b:with>
+  </div>
+</b:includable>
+                    <b:includable id='postTimestamp'>
+  <span class='byline post-timestamp'>
+    <data:byline.label/>
+    <b:if cond='data:post.url'>
+      <meta expr:content='data:post.url.canonical'/>
+      <a class='timestamp-link' expr:href='data:post.url' rel='bookmark' title='permanent link'>
+        <time class='published' expr:datetime='data:post.date.iso8601' expr:title='data:post.date.iso8601'>
+          <data:post.date/>
+        </time>
+      </a>
+    </b:if>
+  </span>
+</b:includable>
+                    <b:includable id='sharingButton'>
+  <span expr:aria-label='data:platform.shareMessage' expr:class='&quot;sharing-platform-button sharing-element-&quot; + data:platform.key' expr:data-href='data:shareUrl + &quot;&amp;target=&quot; + data:platform.target' expr:data-url='data:originalUrl' expr:title='data:platform.shareMessage' role='menuitem' tabindex='-1'>
+    <b:include name='sharingPlatformIcon'/>
+    <span class='platform-sharing-text'><data:platform.name/></span>
+  </span>
+</b:includable>
+                    <b:includable id='sharingButtonContent'>
+  <div class='flat-icon-button ripple'>
+    <b:include name='shareIcon'/>
+  </div>
+</b:includable>
+                    <b:includable id='sharingButtons'>
+  <div class='sharing' expr:aria-owns='&quot;sharing-popup-&quot; + data:sharingId' expr:data-title='data:shareTitle'>
+    <button class='sharing-button touch-icon-button' expr:aria-controls='&quot;sharing-popup-&quot; + data:sharingId' expr:aria-label='data:messages.share.escaped' expr:id='&quot;sharing-button-&quot; + data:sharingId' role='button'>
+      <b:include name='sharingButtonContent'/>
+    </button>
+    <b:include name='sharingButtonsMenu'/>
+  </div>
+</b:includable>
+                    <b:includable id='sharingButtonsMenu'>
+  <div class='share-buttons-container'>
+    <ul aria-hidden='true' class='share-buttons hidden' expr:aria-label='data:messages.share.escaped' expr:id='&quot;sharing-popup-&quot; + data:sharingId' role='menu'>
+      <b:loop values='(data:platforms ?: data:blog.sharing.platforms) filter (p =&gt; p.key not in {&quot;blogThis&quot;})' var='platform'>
+        <li>
+          <b:include name='sharingButton'/>
+        </li>
+      </b:loop>
+      <li aria-hidden='true' class='hidden'>
+        <b:include name='otherSharingButton'/>
+      </li>
+    </ul>
+  </div>
+</b:includable>
+                    <b:includable id='sharingPlatformIcon'>
+  <b:include data='{ iconClass: (&quot;touch-icon sharing-&quot; + data:platform.key) }' expr:name='data:platform.key + &quot;Icon&quot;'/>
+</b:includable>
+                    <b:includable id='snippetedPostByline'>
+  <b:with value='(data:widgets first (w =&gt; w.type == &quot;Blog&quot;)).allBylineItems' var='blogBylines'>
+    <div class='item-byline'>
+      <b:with value='data:blogBylines first (i =&gt; i.name == &quot;author&quot;)' var='byline'>
+        <b:include cond='data:byline and data:this.postDisplay.showAuthor' data='post' name='postAuthor'/>
+      </b:with>
+      <b:with value='data:blogBylines first (i =&gt; i.name == &quot;timestamp&quot;)' var='byline'>
+        <b:include cond='data:byline and data:this.postDisplay.showDate' data='post' name='postTimestamp'/>
+      </b:with>
+    </div>
+  </b:with>
+</b:includable>
+                    <b:includable id='snippetedPostContent'>
+  <div class='post-content'>
+    <b:include cond='data:this.postDisplay.showTitle' name='snippetedPostTitle'/>
+    <b:include cond='data:this.postDisplay.showDate or data:this.postDisplay.showAuthor' name='snippetedPostByline'/>
+    <b:include cond='data:this.postDisplay.showSnippet' data='post' name='postSnippet'/>
+    <b:include cond='data:this.postDisplay.showFeaturedImage and data:post.featuredImage' name='snippetedPostThumbnail'/>
+  </div>
+</b:includable>
+                    <b:includable id='snippetedPostThumbnail'>
+  <div class='item-thumbnail'>
+    <a expr:href='data:post.url'>
+      <b:include data='{                         image: data:post.featuredImage,                         imageSizes: [72, 144],                         imageRatio: &quot;1:1&quot;,                         sourceSizes: &quot;72px&quot;                        }' name='responsiveImage'/>
+    </a>
+  </div>
+</b:includable>
+                    <b:includable id='snippetedPostTitle'>
+  <b:if cond='data:post.title != &quot;&quot;'>
+    <h3 class='post-title'><a expr:href='data:post.url'><data:post.title/></a></h3>
+  </b:if>
+</b:includable>
+                    <b:includable id='snippetedPosts'>
+  <div role='feed'>
+    <!-- Don't render the post that we're currently already looking at. -->
+    <b:loop values='data:posts filter (p =&gt; p.id != data:view.postId)' var='post'>
+      <article class='post' role='article'>
+        <b:include name='snippetedPostContent'/>
+      </article>
+    </b:loop>
+  </div>
+</b:includable>
+                  </b:widget>
+                </b:section>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Skrip Kustom Tema -->
+    <script type='text/javascript'>
+        //<![CDATA[
+        //================================================
+        // 1. FUNCTION DEFINITIONS
+        //================================================
+
+        /**
+         * Mengambil angka dari widget statistik Blogger dan memformatnya dengan pemisah ribuan.
+         */
+        function initializeVisitorCounter() {
+            const displayElement = document.getElementById("total-visitors-display");
+            const sourceElement = document.getElementById("Stats1_totalCount");
+            if (!displayElement || !sourceElement) return;
+
+            const formatCounter = () => {
+                const rawText = sourceElement.textContent;
+                if (rawText && rawText.trim() !== "") {
+                    const number = parseInt(rawText.replace(/[,.]/g, ""), 10);
+                    displayElement.textContent = isNaN(number) ? rawText : number.toLocaleString("id-ID");
+                }
+            };
+            // Amati perubahan pada elemen sumber, karena Blogger memuatnya secara dinamis
+            const observer = new MutationObserver(formatCounter);
+            observer.observe(sourceElement, { childList: true, characterData: true, subtree: true });
+            formatCounter(); // Panggil sekali saat inisialisasi
+        }
+
+        /**
+         * Mengatur dan memperbarui jam dan tanggal di status bar.
+         */
+        function setupClock() {
+            const now = new Date();
+            const timeEl = document.getElementById("statusBarTime");
+            const dateEl = document.getElementById("statusBarDate");
+            if (timeEl) {
+                const hours = now.getHours().toString().padStart(2, "0");
+                const minutes = now.getMinutes().toString().padStart(2, "0");
+                timeEl.textContent = `${hours}:${minutes}`;
+            }
+            if (dateEl) {
+                if (window.innerWidth >= 768) {
+                    dateEl.textContent = now.toLocaleDateString("id-ID", { weekday: "short", month: "short", day: "numeric" });
+                    dateEl.style.display = "inline";
+                } else {
+                    dateEl.style.display = "none";
+                }
+            }
+        }
+
+        /**
+         * Mengelola logika untuk mengganti antara mode terang dan gelap.
+         */
+        /**
+       * Mengelola logika untuk mengganti antara mode terang dan gelap.
+       */
+       function setupThemeToggle() {
+            // Mendapatkan elemen tombol dari status bar dan nav bawah
+            const mainToggleButton = document.getElementById("theme-toggle");
+            const navToggleButton = document.getElementById("nav-theme-toggle");
+            if (!mainToggleButton) return;
+
+            // Mengecek preferensi sistem pengguna
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+            let currentTheme = localStorage.getItem("theme");
+
+            // Fungsi utama untuk menerapkan tema
+            function applyTheme(theme) {
+                const isDark = theme === 'dark';
+                document.body.classList.toggle("dark-mode", isDark);
+
+                // Sinkronkan ikon di status bar utama
+                if (mainToggleButton) {
+                    mainToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+                    mainToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+                }
+
+                // Sinkronkan ikon di navigasi bawah (jika ada)
+                if (navToggleButton) {
+                    navToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+                    navToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+                }
+            }
+
+            // Fungsi yang dijalankan saat tombol diklik
+            function toggleTheme() {
+                let newTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+                // Menyimpan pilihan ke localStorage agar diingat
+                localStorage.setItem("theme", newTheme);
+                applyTheme(newTheme);
+            }
+
+            // Menambahkan event listener ke kedua tombol
+            mainToggleButton.addEventListener("click", toggleTheme);
+            if (navToggleButton) navToggleButton.addEventListener("click", toggleTheme);
+
+            // Listener untuk mengubah tema otomatis jika preferensi sistem berubah
+            prefersDark.addEventListener("change", (e) => {
+                if (!localStorage.getItem("theme")) {
+                    applyTheme(e.matches ? "dark" : "light");
+                }
+            });
+            
+            // Terapkan tema saat halaman pertama kali dimuat
+            applyTheme(currentTheme || (prefersDark.matches ? "dark" : "light"));
+        }
+
+        /**
+         * Menangani logika pencarian langsung saat pengguna mengetik.
+         */
+        function liveSearchHandler(inputElement, resultsContainer) {
+            if (!inputElement || !resultsContainer) return;
+            let searchTimeout;
+            inputElement.addEventListener("keyup", (e) => {
+                const query = e.target.value.trim();
+                clearTimeout(searchTimeout);
+
+                if (query.length < 3) {
+                    resultsContainer.style.display = "none";
+                    resultsContainer.innerHTML = "";
+                    return;
+                }
+
+                resultsContainer.style.display = "block";
+                resultsContainer.innerHTML = '<div class="search-loader">Mencari...</div>';
+                
+                searchTimeout = setTimeout(() => {
+                    fetch(`/feeds/posts/default?alt=json&q=${encodeURIComponent(query)}&max-results=5`)
+                        .then(response => response.json())
+                        .then(data => {
+                            let resultsHTML = "";
+                            if (data.feed.entry && data.feed.entry.length > 0) {
+                                resultsHTML += "<ul>";
+                                data.feed.entry.forEach(entry => {
+                                    const postTitle = entry.title.$t;
+                                    const postUrl = (entry.link.find(link => link.rel === "alternate") || {}).href;
+                                    if (postUrl) {
+                                        resultsHTML += `<li><a href="${postUrl}">${postTitle}</a></li>`;
+                                    }
+                                });
+                                resultsHTML += "</ul>";
+                            } else {
+                                resultsHTML = '<div class="no-results">Tidak ada hasil ditemukan.</div>';
+                            }
+                            resultsContainer.innerHTML = resultsHTML;
+                        })
+                        .catch(error => {
+                            console.error("Error fetching search results:", error);
+                            resultsContainer.innerHTML = '<div class="no-results">Gagal memuat hasil.</div>';
+                        });
+                }, 300);
+            });
+        }
+        
+		// Aktifkan live search untuk FAB Popup
+        const fabSearchInput = document.getElementById('fab-search-input');
+        const fabSearchResults = document.getElementById('fab-live-search-results');
+        liveSearchHandler(fabSearchInput, fabSearchResults);
+
+        /**
+         * Menangani popup yang bisa ditutup dengan mengklik di luarnya.
+         */
+        function setupNonModalPopup(triggerId, overlayId, containerClass, closeId) {
+            const triggerBtn = document.getElementById(triggerId);
+            const overlay = document.getElementById(overlayId);
+            if (!triggerBtn || !overlay) return;
+
+            const container = overlay.querySelector(containerClass);
+            const closeBtn = document.getElementById(closeId);
+            if (!container || !closeBtn) return;
+
+            const closePopup = () => overlay.classList.remove('active');
+            
+            triggerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                overlay.classList.toggle('active');
+            });
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closePopup();
+            });
+            document.addEventListener('click', (e) => {
+                if (overlay.classList.contains('active') && !container.contains(e.target) && !triggerBtn.contains(e.target)) {
+                    closePopup();
+                }
+            });
+        }
+        
+        /**
+         * Mengatur semua fungsionalitas navigasi khusus mobile.
+         */
+        function setupMobileNav() {
+            if (window.innerWidth >= 1024) return;
+            const mobileNav = document.getElementById("mobileBottomNav");
+            if (mobileNav) mobileNav.style.display = "flex";
+
+            const navCategories = document.getElementById("nav-categories");
+            const categoriesModal = document.getElementById("categoriesModalOverlay");
+            const categoriesBody = document.getElementById("categoriesModalBody");
+            const categoriesSource = document.querySelector(".sidebar-menu .widget.Label ul");
+            if (navCategories && categoriesModal && categoriesBody && categoriesSource) {
+                categoriesBody.innerHTML = categoriesSource.outerHTML;
+                navCategories.addEventListener("click", () => categoriesModal.classList.add("active"));
+                categoriesModal.addEventListener("click", e => {
+                    if (e.target === categoriesModal) categoriesModal.classList.remove("active");
+                });
+            }
+
+            const navMenu = document.getElementById("nav-menu");
+            const slideMenu = document.getElementById("slideMenu");
+            const overlayMobile = document.getElementById("overlayMobile");
+
+            function toggleMobileMenu() {
+                slideMenu.classList.toggle("open");
+                overlayMobile.classList.toggle("active");
+            }
+            if (navMenu && slideMenu && overlayMobile) {
+                navMenu.addEventListener("click", toggleMobileMenu);
+                overlayMobile.addEventListener("click", toggleMobileMenu);
+            }
+        }
+
+        /**
+         * Menghitung dan menampilkan progress bar saat membaca postingan.
+         */
+        /**
+       * Menghitung dan menampilkan progress bar saat membaca postingan.
+       */
+      function setupReadingProgress() {
+          const progressBar = document.getElementById("progressBar");
+          // Tentukan container scroll berdasarkan ukuran viewport
+          const scrollContainer = window.innerWidth < 1024 ? window : document.querySelector(".ios-main-content");
+          const contentContainer = document.querySelector(".posts-wrapper-outer");
+          if (!progressBar || !scrollContainer || !contentContainer) return;
+
+          function updateProgress() {
+              let containerHeight;
+              let scrollPosition;
+
+              // Gunakan metode kalkulasi yang berbeda untuk mobile dan desktop
+              if (scrollContainer === window) {
+                  // --- INI ADALAH PERBAIKAN UNTUK MOBILE ---
+                  containerHeight = contentContainer.scrollHeight - window.innerHeight;
+                  scrollPosition = window.scrollY;
+              } else {
+                  // Ini adalah logika lama untuk desktop, yang sudah benar
+                  containerHeight = contentContainer.scrollHeight - scrollContainer.clientHeight;
+                  scrollPosition = scrollContainer.scrollTop;
+              }
+
+              if (containerHeight > 0) {
+                  const progress = (scrollPosition / containerHeight) * 100;
+                  progressBar.style.width = `${progress}%`;
+              } else {
+                  progressBar.style.width = "0%";
+              }
+          }
+          scrollContainer.addEventListener("scroll", updateProgress, { passive: true });
+      }
+
+        //================================================
+        // 2. DOMContentLoaded INITIALIZATION
+        //================================================
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Inisialisasi semua fungsi utama
+            initializeVisitorCounter();
+            setupClock();
+            setInterval(setupClock, 60000); // Perbarui jam setiap menit
+            setupThemeToggle();
+            setupMobileNav();
+
+            // Atur tahun hak cipta di footer sidebar
+            const currentYearSidebar = document.getElementById("currentYearSidebar");
+            if (currentYearSidebar) currentYearSidebar.textContent = new Date().getFullYear();
+
+            // Aktifkan live search
+            const searchInput = document.querySelector(".sidebar-search-input");
+            const searchResults = document.querySelector("#live-search-results");
+            liveSearchHandler(searchInput, searchResults);
+
+            // Aktifkan popup
+            setupNonModalPopup("togglePopularBtn", "popularPostsOverlay", ".popup-container", "closePopularBtn");
+
+			// Aktifkan popup untuk FAB Pencarian
+            setupNonModalPopup('toggleSearchBtn', 'searchFabOverlay', '.popup-container', 'closeSearchFabBtn');
+
+            // Atur fungsionalitas Tombol Kembali ke Atas
+            const backToTopBtn = document.getElementById("backToTopBtn");
+            const mainContent = document.querySelector(".ios-main-content");
+            const scrollContainer = window.innerWidth < 1024 ? window : mainContent;
+
+            function handleScroll() {
+                if (!backToTopBtn) return;
+                const scrollTop = window.innerWidth < 1024 ? (document.documentElement.scrollTop || document.body.scrollTop) : mainContent.scrollTop;
+                if (scrollTop > 200) {
+                    backToTopBtn.style.display = "flex";
+                    document.body.classList.remove('btt-is-hidden');
+                } else {
+                    backToTopBtn.style.display = "none";
+                    document.body.classList.add('btt-is-hidden');
+                }
+            }
+
+            function scrollToTop() {
+                if (scrollContainer) {
+                    scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            }
+            if (scrollContainer) scrollContainer.addEventListener("scroll", handleScroll);
+            if (backToTopBtn) backToTopBtn.addEventListener("click", scrollToTop);
+            
+            // Jadikan jam di status bar sebagai tombol scroll to top juga
+            const statusBarTime = document.getElementById("statusBarTime");
+            if (statusBarTime) statusBarTime.addEventListener("click", scrollToTop);
+
+            handleScroll(); // Panggil sekali untuk mengatur status awal tombol
+
+            // Jalankan fungsi khusus halaman postingan
+            if (document.body.classList.contains('item-page')) {
+                setupReadingProgress();
+
+                // =========================================================
+                // BAGIAN PENTING YANG HARUS DIPASTIKAN ADA
+                // Kode ini harus ada untuk menampilkan container progress bar
+                const progressContainer = document.querySelector('.progress-container');
+                if (progressContainer) {
+                    progressContainer.style.display = 'block';
+                }
+                // =========================================================
+
+                const tocPopupBody = document.getElementById('tocPopupBody');
+                const postBody = document.querySelector('.ios-post-body-full');
+                const tocBtn = document.getElementById('toggleTocBtn');
+
+                /**
+                 * Membuat daftar isi (Table of Contents) secara dinamis dari heading H2 dan H3.
+                 */
+                function generateTableOfContents() {
+                    if (!tocPopupBody || !postBody) return;
+                    const headings = postBody.querySelectorAll('h2, h3');
+
+                    // Sembunyikan tombol TOC jika tidak ada cukup heading
+                    if (headings.length < 2) {
+                        if (tocBtn) tocBtn.style.display = 'none';
+                        return;
+                    }
+
+                    let tocHTML = '<ul>';
+                    headings.forEach((heading, index) => {
+                        const id = 'toc-' + index;
+                        heading.id = id;
+                        const tagName = heading.tagName.toLowerCase();
+                        tocHTML += `<li class='toc-${tagName}'><a class='toc-link' href='#${id}'>${heading.textContent}</a></li>`;
+                    });
+                    tocHTML += '</ul>';
+                    tocPopupBody.innerHTML = tocHTML;
+                }
+
+                /**
+                 * Menangani klik pada link TOC untuk menutup popup.
+                 */
+                function setupTocLinkClickHandler() {
+                    if (!tocPopupBody) return;
+                    tocPopupBody.addEventListener('click', function(e) {
+                        if (e.target && e.target.classList.contains('toc-link')) {
+                            const tocOverlay = document.getElementById('tocOverlay');
+                            if(tocOverlay) tocOverlay.classList.remove('active');
+                        }
+                    });
+                }
+                
+                if (tocBtn) {
+                    generateTableOfContents();
+                    setupTocLinkClickHandler();
+                    setupNonModalPopup("toggleTocBtn", "tocOverlay", ".popup-container", "closeTocBtn");
+                }
+            }
+        });
+        //]]>
+    </script>
+    
+    <!-- Skrip Google Analytics (jika ada) -->
+    <b:include data='blog' name='google-analytics'/>
+</body>
+</html>

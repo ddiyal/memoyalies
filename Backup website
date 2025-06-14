@@ -244,6 +244,72 @@ body {
 }
 
 /*-----------------------------------------------------------------------------------*/
+/* 2.1 DYNAMIC ISLAND NOTIFICATION (BARU) */
+/*-----------------------------------------------------------------------------------*/
+.dynamic-island-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--c-accent); /* Warna aksen sebagai latar belakang */
+    color: var(--c-accent-text); /* Warna teks untuk notifikasi */
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1006; /* Pastikan di atas elemen lain di status bar */
+    pointer-events: none; /* Agar tidak menghalangi klik di bawahnya */
+}
+
+.dynamic-island-notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Gaya untuk ikon notifikasi (opsional, bisa diganti SVG) */
+.notification-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Contoh ikon: centang, info, cari, dll. */
+.notification-icon.check {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4.5 12.75l6 6 9-13.5'/%3E%3C/svg%3E");
+}
+.notification-icon.info {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.02M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
+}
+.notification-icon.search {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'/%3E%3C/svg%3E");
+}
+.notification-icon.moon { /* Untuk dark mode */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21.75 12.793a9 9 0 10-10.792 10.792A9 9 0 0021.75 12.793z'/%3E%3C/svg%3E");
+    stroke: none; /* Pastikan fill yang digunakan, bukan stroke */
+}
+.notification-icon.sun { /* Untuk light mode */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m18.364 4.546l-1.06 1.06M6.707 6.707l-1.06-1.06M12 18a6 6 0 100-12 6 6 0 000 12zM19.782 4.218l-1.06 1.06M5.636 18.364l-1.06 1.06'/%3E%3C/svg%3E");
+    stroke: none; /* Pastikan fill yang digunakan, bukan stroke */
+}
+.notification-icon.list {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'/%3E%3C/svg%3E");
+}
+.notification-icon.posts {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M16.5 7.5L21 12m0 0l-4.5 4.5M21 12H3'/%3E%3C/svg%3E");
+}
+
+/*-----------------------------------------------------------------------------------*/
 /* 3. SIDEBAR & MENU
 /*-----------------------------------------------------------------------------------*/
 .sidebar-menu {
@@ -1912,6 +1978,10 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                 Menu
             </button>
         </div>
+      	<div class='dynamic-island-notification' id='dynamicIslandNotification'>
+    <span class='notification-icon'/>
+    <span class='notification-text'/>
+</div>
         <b:if cond='data:blog.pageType != &quot;index&quot; or (data:blog.pageType == &quot;index&quot; and (data:blog.searchQuery or data:blog.searchLabel))'>
             <nav aria-label='Breadcrumb' class='breadcrumbs-in-statusbar'>
                 <ol>
@@ -3192,385 +3262,482 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     
     <!-- Skrip Kustom Tema -->
     <script type='text/javascript'>
-        //<![CDATA[
-        //================================================
-        // 1. FUNCTION DEFINITIONS
-        //================================================
+    //<![CDATA[
+    //================================================
+    // 1. FUNCTION DEFINITIONS
+    //================================================
 
-        /**
-         * Mengambil angka dari widget statistik Blogger dan memformatnya dengan pemisah ribuan.
-         */
-        function initializeVisitorCounter() {
-            const displayElement = document.getElementById("total-visitors-display");
-            const sourceElement = document.getElementById("Stats1_totalCount");
-            if (!displayElement || !sourceElement) return;
+    /**
+     * Menampilkan notifikasi "Dynamic Island" di status bar.
+     * @param {string} message Pesan yang akan ditampilkan.
+     * @param {string} iconClass Kelas CSS untuk ikon (e.g., 'check', 'info', 'search', 'moon', 'sun', 'list', 'posts').
+     * @param {number} duration Durasi notifikasi dalam milidetik (default 3000).
+     */
+    function showDynamicIslandNotification(message, iconClass, duration = 3000) {
+        const notificationEl = document.getElementById("dynamicIslandNotification");
+        const iconEl = notificationEl.querySelector(".notification-icon");
+        const textEl = notificationEl.querySelector(".notification-text");
 
-            const formatCounter = () => {
-                const rawText = sourceElement.textContent;
-                if (rawText && rawText.trim() !== "") {
-                    const number = parseInt(rawText.replace(/[,.]/g, ""), 10);
-                    displayElement.textContent = isNaN(number) ? rawText : number.toLocaleString("id-ID");
-                }
-            };
-            // Amati perubahan pada elemen sumber, karena Blogger memuatnya secara dinamis
-            const observer = new MutationObserver(formatCounter);
-            observer.observe(sourceElement, { childList: true, characterData: true, subtree: true });
-            formatCounter(); // Panggil sekali saat inisialisasi
+        if (!notificationEl || !iconEl || !textEl) return;
+
+        // Bersihkan kelas ikon sebelumnya dan tambahkan yang baru
+        iconEl.className = 'notification-icon';
+        iconEl.classList.add(iconClass);
+        textEl.textContent = message;
+
+        notificationEl.classList.add("show");
+
+        setTimeout(() => {
+            notificationEl.classList.remove("show");
+        }, duration);
+    }
+
+    /**
+     * Mengambil angka dari widget statistik Blogger dan memformatnya dengan pemisah ribuan.
+     */
+    function initializeVisitorCounter() {
+        const displayElement = document.getElementById("total-visitors-display");
+        const sourceElement = document.getElementById("Stats1_totalCount");
+        if (!displayElement || !sourceElement) return;
+
+        const formatCounter = () => {
+            const rawText = sourceElement.textContent;
+            if (rawText && rawText.trim() !== "") {
+                const number = parseInt(rawText.replace(/[,.]/g, ""), 10);
+                displayElement.textContent = isNaN(number) ? rawText : number.toLocaleString("id-ID");
+            }
+        };
+        // Amati perubahan pada elemen sumber, karena Blogger memuatnya secara dinamis
+        const observer = new MutationObserver(formatCounter);
+        observer.observe(sourceElement, { childList: true, characterData: true, subtree: true });
+        formatCounter(); // Panggil sekali saat inisialisasi
+    }
+
+    /**
+     * Mengatur dan memperbarui jam dan tanggal di status bar.
+     */
+    function setupClock() {
+        const now = new Date();
+        const timeEl = document.getElementById("statusBarTime");
+        const dateEl = document.getElementById("statusBarDate");
+        if (timeEl) {
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            timeEl.textContent = `${hours}:${minutes}`;
+        }
+        if (dateEl) {
+            if (window.innerWidth >= 768) {
+                dateEl.textContent = now.toLocaleDateString("id-ID", { weekday: "short", month: "short", day: "numeric" });
+                dateEl.style.display = "inline";
+            } else {
+                dateEl.style.display = "none";
+            }
+        }
+    }
+
+    /**
+     * Mengelola logika untuk mengganti antara mode terang dan gelap.
+     */
+    function setupThemeToggle() {
+        const mainToggleButton = document.getElementById("theme-toggle");
+        const navToggleButton = document.getElementById("nav-theme-toggle");
+        if (!mainToggleButton) return;
+
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+        let currentTheme = localStorage.getItem("theme");
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle("dark-mode", isDark);
+
+            if (mainToggleButton) {
+                mainToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+                mainToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+            }
+
+            if (navToggleButton) {
+                navToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+                navToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+            }
         }
 
-        /**
-         * Mengatur dan memperbarui jam dan tanggal di status bar.
-         */
-        function setupClock() {
-            const now = new Date();
-            const timeEl = document.getElementById("statusBarTime");
-            const dateEl = document.getElementById("statusBarDate");
-            if (timeEl) {
-                const hours = now.getHours().toString().padStart(2, "0");
-                const minutes = now.getMinutes().toString().padStart(2, "0");
-                timeEl.textContent = `${hours}:${minutes}`;
-            }
-            if (dateEl) {
-                if (window.innerWidth >= 768) {
-                    dateEl.textContent = now.toLocaleDateString("id-ID", { weekday: "short", month: "short", day: "numeric" });
-                    dateEl.style.display = "inline";
-                } else {
-                    dateEl.style.display = "none";
-                }
+        function toggleTheme() {
+            let newTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+            localStorage.setItem("theme", newTheme);
+            applyTheme(newTheme);
+            if (newTheme === 'dark') {
+                showDynamicIslandNotification("Mode Gelap Aktif", "moon");
+            } else {
+                showDynamicIslandNotification("Mode Terang Aktif", "sun");
             }
         }
 
-        /**
-         * Mengelola logika untuk mengganti antara mode terang dan gelap.
-         */
-        /**
-       * Mengelola logika untuk mengganti antara mode terang dan gelap.
-       */
-       function setupThemeToggle() {
-            // Mendapatkan elemen tombol dari status bar dan nav bawah
-            const mainToggleButton = document.getElementById("theme-toggle");
-            const navToggleButton = document.getElementById("nav-theme-toggle");
-            if (!mainToggleButton) return;
+        mainToggleButton.addEventListener("click", toggleTheme);
+        if (navToggleButton) navToggleButton.addEventListener("click", toggleTheme);
 
-            // Mengecek preferensi sistem pengguna
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-            let currentTheme = localStorage.getItem("theme");
+        prefersDark.addEventListener("change", (e) => {
+            if (!localStorage.getItem("theme")) {
+                applyTheme(e.matches ? "dark" : "light");
+            }
+        });
 
-            // Fungsi utama untuk menerapkan tema
-            function applyTheme(theme) {
-                const isDark = theme === 'dark';
-                document.body.classList.toggle("dark-mode", isDark);
+        applyTheme(currentTheme || (prefersDark.matches ? "dark" : "light"));
+    }
 
-                // Sinkronkan ikon di status bar utama
-                if (mainToggleButton) {
-                    mainToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
-                    mainToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
-                }
+    /**
+     * Menangani logika pencarian langsung saat pengguna mengetik.
+     */
+    function liveSearchHandler(inputElement, resultsContainer) {
+        if (!inputElement || !resultsContainer) return;
+        let searchTimeout;
+        inputElement.addEventListener("keyup", (e) => {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
 
-                // Sinkronkan ikon di navigasi bawah (jika ada)
-                if (navToggleButton) {
-                    navToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
-                    navToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
-                }
-            }
+            if (query.length < 3) {
+                resultsContainer.style.display = "none";
+                resultsContainer.innerHTML = "";
+                return;
+            }
 
-            // Fungsi yang dijalankan saat tombol diklik
-            function toggleTheme() {
-                let newTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
-                // Menyimpan pilihan ke localStorage agar diingat
-                localStorage.setItem("theme", newTheme);
-                applyTheme(newTheme);
-            }
+            resultsContainer.style.display = "block";
+            resultsContainer.innerHTML = '<div class="search-loader">Mencari...</div>';
 
-            // Menambahkan event listener ke kedua tombol
-            mainToggleButton.addEventListener("click", toggleTheme);
-            if (navToggleButton) navToggleButton.addEventListener("click", toggleTheme);
+            searchTimeout = setTimeout(() => {
+                fetch(`/feeds/posts/default?alt=json&q=${encodeURIComponent(query)}&max-results=5`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let resultsHTML = "";
+                        if (data.feed.entry && data.feed.entry.length > 0) {
+                            resultsHTML += "<ul>";
+                            data.feed.entry.forEach(entry => {
+                                const postTitle = entry.title.$t;
+                                const postUrl = (entry.link.find(link => link.rel === "alternate") || {}).href;
+                                if (postUrl) {
+                                    resultsHTML += `<li><a href="${postUrl}">${postTitle}</a></li>`;
+                                }
+                            });
+                            resultsHTML += "</ul>";
+                            showDynamicIslandNotification("Hasil Pencarian", "search");
+                        } else {
+                            resultsHTML = '<div class="no-results">Tidak ada hasil ditemukan.</div>';
+                            showDynamicIslandNotification("Tidak Ada Hasil", "info");
+                        }
+                        resultsContainer.innerHTML = resultsHTML;
+                    })
+                    .catch(error => {
+                        console.error("Error fetching search results:", error);
+                        resultsContainer.innerHTML = '<div class="no-results">Gagal memuat hasil.</div>';
+                    });
+            }, 300);
+        });
+    }
 
-            // Listener untuk mengubah tema otomatis jika preferensi sistem berubah
-            prefersDark.addEventListener("change", (e) => {
-                if (!localStorage.getItem("theme")) {
-                    applyTheme(e.matches ? "dark" : "light");
-                }
-            });
-            
-            // Terapkan tema saat halaman pertama kali dimuat
-            applyTheme(currentTheme || (prefersDark.matches ? "dark" : "light"));
-        }
+    /**
+     * Menangani popup yang bisa ditutup dengan mengklik di luarnya.
+     */
+    function setupNonModalPopup(triggerId, overlayId, containerClass, closeId) {
+        const triggerBtn = document.getElementById(triggerId);
+        const overlay = document.getElementById(overlayId);
+        if (!triggerBtn || !overlay) return;
 
-        /**
-         * Menangani logika pencarian langsung saat pengguna mengetik.
-         */
-        function liveSearchHandler(inputElement, resultsContainer) {
-            if (!inputElement || !resultsContainer) return;
-            let searchTimeout;
-            inputElement.addEventListener("keyup", (e) => {
-                const query = e.target.value.trim();
-                clearTimeout(searchTimeout);
+        const container = overlay.querySelector(containerClass);
+        const closeBtn = document.getElementById(closeId);
+        if (!container || !closeBtn) return;
 
-                if (query.length < 3) {
-                    resultsContainer.style.display = "none";
-                    resultsContainer.innerHTML = "";
+        const closePopup = () => overlay.classList.remove('active');
+
+        triggerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            overlay.classList.toggle('active');
+        });
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePopup();
+        });
+        document.addEventListener('click', (e) => {
+            if (overlay.classList.contains('active') && !container.contains(e.target) && !triggerBtn.contains(e.target)) {
+                closePopup();
+            }
+        });
+    }
+
+    /**
+     * Mengatur semua fungsionalitas navigasi khusus mobile.
+     */
+    function setupMobileNav() {
+        if (window.innerWidth >= 1024) return;
+        const mobileNav = document.getElementById("mobileBottomNav");
+        if (mobileNav) mobileNav.style.display = "flex";
+
+        const navCategories = document.getElementById("nav-categories");
+        const categoriesModal = document.getElementById("categoriesModalOverlay");
+        const categoriesBody = document.getElementById("categoriesModalBody");
+        const categoriesSource = document.querySelector(".sidebar-menu .widget.Label ul");
+        if (navCategories && categoriesModal && categoriesBody && categoriesSource) {
+            categoriesBody.innerHTML = categoriesSource.outerHTML;
+            navCategories.addEventListener("click", () => categoriesModal.classList.add("active"));
+            categoriesModal.addEventListener("click", e => {
+                if (e.target === categoriesModal) categoriesModal.classList.remove("active");
+            });
+        }
+
+        const navMenu = document.getElementById("nav-menu");
+        const slideMenu = document.getElementById("slideMenu");
+        const overlayMobile = document.getElementById("overlayMobile");
+
+        function toggleMobileMenu() {
+            slideMenu.classList.toggle("open");
+            overlayMobile.classList.toggle("active");
+        }
+        if (navMenu && slideMenu && overlayMobile) {
+            navMenu.addEventListener("click", toggleMobileMenu);
+            overlayMobile.addEventListener("click", toggleMobileMenu);
+        }
+    }
+
+    /**
+     * Menghitung dan menampilkan progress bar saat membaca postingan.
+     */
+    function setupReadingProgress() {
+        const progressBar = document.getElementById("progressBar");
+        const scrollContainer = window.innerWidth < 1024 ? window : document.querySelector(".ios-main-content");
+        const contentContainer = document.querySelector(".posts-wrapper-outer");
+        if (!progressBar || !scrollContainer || !contentContainer) return;
+
+        function updateProgress() {
+            let containerHeight;
+            let scrollPosition;
+
+            if (scrollContainer === window) {
+                containerHeight = document.documentElement.scrollHeight - window.innerHeight;
+                scrollPosition = window.scrollY;
+            } else {
+                containerHeight = contentContainer.scrollHeight - scrollContainer.clientHeight;
+                scrollPosition = scrollContainer.scrollTop;
+            }
+
+            if (containerHeight > 0) {
+                const progress = (scrollPosition / containerHeight) * 100;
+                progressBar.style.width = `${progress}%`;
+            } else {
+                progressBar.style.width = "0%";
+            }
+        }
+        scrollContainer.addEventListener("scroll", updateProgress, { passive: true });
+        updateProgress();
+    }
+
+
+    //================================================
+    // 2. DOMContentLoaded INITIALIZATION
+    //================================================
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // Notifikasi: Konten berhasil dimuat (menggunakan judul postingan jika di halaman postingan)
+        let pageLoadMessage = "Halaman berhasil dimuat";
+        const pageTitleElement = document.querySelector('h2.ios-post-title a'); // Mencoba ambil judul postingan
+        
+        // Hanya tampilkan judul postingan jika ini halaman postingan tunggal
+        if (document.body.classList.contains('item-page') && pageTitleElement) {
+            const postTitle = pageTitleElement.textContent.trim();
+            const trimmedPostTitle = postTitle.split(/\s+/).slice(0, 3).join(" ");
+            pageLoadMessage = `${trimmedPostTitle} berhasil dimuat`;
+        } else {
+            // Jika bukan halaman postingan atau tidak ada judul postingan, gunakan judul blog
+            const blogTitleElement = document.querySelector('.sidebar-main-title a');
+            let currentBlogTitle = "Situs Web"; // Default fallback
+            if (blogTitleElement) {
+                currentBlogTitle = blogTitleElement.textContent.trim();
+            }
+            const trimmedBlogTitle = currentBlogTitle.split(/\s+/).slice(0, 3).join(" ");
+            pageLoadMessage = `${trimmedBlogTitle} berhasil dimuat`;
+        }
+        showDynamicIslandNotification(pageLoadMessage, "check");
+
+
+        // Inisialisasi semua fungsi utama
+        initializeVisitorCounter();
+        setupClock();
+        setInterval(setupClock, 60000); // Perbarui jam setiap menit
+        setupThemeToggle();
+        setupMobileNav();
+
+        // Atur tahun hak cipta di footer sidebar
+        const currentYearSidebar = document.getElementById("currentYearSidebar");
+        if (currentYearSidebar) currentYearSidebar.textContent = new Date().getFullYear();
+
+        // Aktifkan live search untuk sidebar
+        const sidebarSearchInput = document.querySelector(".sidebar-search-input");
+        const sidebarSearchResults = document.querySelector("#live-search-results");
+        if (sidebarSearchInput && sidebarSearchResults) {
+            liveSearchHandler(sidebarSearchInput, sidebarSearchResults);
+        }
+
+        // Aktifkan live search untuk FAB Popup
+        const fabSearchInput = document.getElementById('fab-search-input');
+        const fabSearchResults = document.getElementById('fab-live-search-results');
+        if (fabSearchInput && fabSearchResults) {
+            liveSearchHandler(fabSearchInput, fabSearchResults);
+        }
+
+        // Aktifkan popup & Notifikasi untuk FAB Popular Posts
+        setupNonModalPopup("togglePopularBtn", "popularPostsOverlay", ".popup-container", "closePopularBtn");
+        const togglePopularBtn = document.getElementById("togglePopularBtn");
+        if (togglePopularBtn) {
+            togglePopularBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    showDynamicIslandNotification("Postingan Populer", "posts");
+                }, 100);
+            });
+        }
+
+        // Aktifkan popup untuk FAB Pencarian
+        setupNonModalPopup('toggleSearchBtn', 'searchFabOverlay', '.popup-container', 'closeSearchFabBtn');
+        // Notifikasi untuk FAB Pencarian sudah ditangani di liveSearchHandler
+
+        // Atur fungsionalitas Tombol Kembali ke Atas
+        const backToTopBtn = document.getElementById("backToTopBtn");
+        const mainContent = document.querySelector(".ios-main-content");
+        const scrollContainer = window.innerWidth < 1024 ? window : mainContent;
+
+        function handleScroll() {
+            if (!backToTopBtn) return;
+            const scrollTop = scrollContainer === window ? (document.documentElement.scrollTop || document.body.scrollTop) : mainContent.scrollTop;
+
+            if (scrollTop > 200) {
+                backToTopBtn.style.display = "flex";
+                document.body.classList.remove('btt-is-hidden');
+            } else {
+                backToTopBtn.style.display = "none";
+                document.body.classList.add('btt-is-hidden');
+            }
+        }
+
+        function scrollToTop() {
+            if (scrollContainer) {
+                scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+        if (scrollContainer) scrollContainer.addEventListener("scroll", handleScroll);
+        if (backToTopBtn) backToTopBtn.addEventListener("click", scrollToTop);
+
+        const statusBarTime = document.getElementById("statusBarTime");
+        if (statusBarTime) statusBarTime.addEventListener("click", scrollToTop);
+
+        handleScroll();
+
+        if (document.body.classList.contains('item-page')) {
+            setupReadingProgress();
+
+            const progressContainer = document.querySelector('.progress-container');
+            if (progressContainer) {
+                progressContainer.style.display = 'block';
+            }
+
+            const tocPopupBody = document.getElementById('tocPopupBody');
+            const postBody = document.querySelector('.ios-post-body-full');
+            const tocBtn = document.getElementById('toggleTocBtn');
+
+            function generateTableOfContents() {
+                if (!tocPopupBody || !postBody) return;
+                const headings = postBody.querySelectorAll('h2, h3');
+
+                if (headings.length < 2) {
+                    if (tocBtn) tocBtn.style.display = 'none';
                     return;
                 }
 
-                resultsContainer.style.display = "block";
-                resultsContainer.innerHTML = '<div class="search-loader">Mencari...</div>';
-                
-                searchTimeout = setTimeout(() => {
-                    fetch(`/feeds/posts/default?alt=json&q=${encodeURIComponent(query)}&max-results=5`)
-                        .then(response => response.json())
-                        .then(data => {
-                            let resultsHTML = "";
-                            if (data.feed.entry && data.feed.entry.length > 0) {
-                                resultsHTML += "<ul>";
-                                data.feed.entry.forEach(entry => {
-                                    const postTitle = entry.title.$t;
-                                    const postUrl = (entry.link.find(link => link.rel === "alternate") || {}).href;
-                                    if (postUrl) {
-                                        resultsHTML += `<li><a href="${postUrl}">${postTitle}</a></li>`;
-                                    }
-                                });
-                                resultsHTML += "</ul>";
-                            } else {
-                                resultsHTML = '<div class="no-results">Tidak ada hasil ditemukan.</div>';
-                            }
-                            resultsContainer.innerHTML = resultsHTML;
-                        })
-                        .catch(error => {
-                            console.error("Error fetching search results:", error);
-                            resultsContainer.innerHTML = '<div class="no-results">Gagal memuat hasil.</div>';
-                        });
-                }, 300);
-            });
-        }
-        
-		// Aktifkan live search untuk FAB Popup
-        const fabSearchInput = document.getElementById('fab-search-input');
-        const fabSearchResults = document.getElementById('fab-live-search-results');
-        liveSearchHandler(fabSearchInput, fabSearchResults);
+                let tocHTML = '<ul>';
+                headings.forEach((heading, index) => {
+                    const id = 'toc-' + index;
+                    heading.id = id;
+                    const tagName = heading.tagName.toLowerCase();
+                    tocHTML += `<li class='toc-${tagName}'><a class='toc-link' href='#${id}'>${heading.textContent}</a></li>`;
+                });
+                tocHTML += '</ul>';
+                tocPopupBody.innerHTML = tocHTML;
+            }
 
-        /**
-         * Menangani popup yang bisa ditutup dengan mengklik di luarnya.
-         */
-        function setupNonModalPopup(triggerId, overlayId, containerClass, closeId) {
-            const triggerBtn = document.getElementById(triggerId);
-            const overlay = document.getElementById(overlayId);
-            if (!triggerBtn || !overlay) return;
-
-            const container = overlay.querySelector(containerClass);
-            const closeBtn = document.getElementById(closeId);
-            if (!container || !closeBtn) return;
-
-            const closePopup = () => overlay.classList.remove('active');
-            
-            triggerBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                overlay.classList.toggle('active');
-            });
-            closeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                closePopup();
-            });
-            document.addEventListener('click', (e) => {
-                if (overlay.classList.contains('active') && !container.contains(e.target) && !triggerBtn.contains(e.target)) {
-                    closePopup();
-                }
-            });
-        }
-        
-        /**
-         * Mengatur semua fungsionalitas navigasi khusus mobile.
-         */
-        function setupMobileNav() {
-            if (window.innerWidth >= 1024) return;
-            const mobileNav = document.getElementById("mobileBottomNav");
-            if (mobileNav) mobileNav.style.display = "flex";
-
-            const navCategories = document.getElementById("nav-categories");
-            const categoriesModal = document.getElementById("categoriesModalOverlay");
-            const categoriesBody = document.getElementById("categoriesModalBody");
-            const categoriesSource = document.querySelector(".sidebar-menu .widget.Label ul");
-            if (navCategories && categoriesModal && categoriesBody && categoriesSource) {
-                categoriesBody.innerHTML = categoriesSource.outerHTML;
-                navCategories.addEventListener("click", () => categoriesModal.classList.add("active"));
-                categoriesModal.addEventListener("click", e => {
-                    if (e.target === categoriesModal) categoriesModal.classList.remove("active");
+            function setupTocLinkClickHandler() {
+                if (!tocPopupBody) return;
+                tocPopupBody.addEventListener('click', function(e) {
+                    if (e.target && e.target.classList.contains('toc-link')) {
+                        const tocOverlay = document.getElementById('tocOverlay');
+                        if(tocOverlay) tocOverlay.classList.remove('active');
+                    }
                 });
             }
 
-            const navMenu = document.getElementById("nav-menu");
-            const slideMenu = document.getElementById("slideMenu");
-            const overlayMobile = document.getElementById("overlayMobile");
-
-            function toggleMobileMenu() {
-                slideMenu.classList.toggle("open");
-                overlayMobile.classList.toggle("active");
+            if (tocBtn) {
+                generateTableOfContents();
+                setupTocLinkClickHandler();
+                setupNonModalPopup("toggleTocBtn", "tocOverlay", ".popup-container", "closeTocBtn");
+                toggleTocBtn.addEventListener('click', () => {
+                    setTimeout(() => {
+                        showDynamicIslandNotification("Daftar Isi", "list");
+                    }, 100);
+                });
             }
-            if (navMenu && slideMenu && overlayMobile) {
-                navMenu.addEventListener("click", toggleMobileMenu);
-                overlayMobile.addEventListener("click", toggleMobileMenu);
+
+            // Notifikasi: Berhasil menambahkan komentar
+            const commentEditorIframe = document.getElementById('comment-editor');
+            if (commentEditorIframe) {
+                // Memantau pesan dari iframe (misalnya, jika Blogger mengirim postMessage)
+                window.addEventListener('message', function(event) {
+                    // Hanya proses pesan dari origin Blogger
+                    if (event.origin.includes('blogger.com') || event.origin.includes('blogspot.com')) {
+                        // Periksa data pesan untuk indikasi sukses komentar
+                        // Ini adalah heuristic (dugaan) terbaik, tidak ada API resmi dari Blogger
+                        if (event.data && typeof event.data === 'string' && event.data.includes('comment-posted') || event.data.includes('comment_published')) {
+                            showDynamicIslandNotification("Komentar berhasil ditambahkan!", "check");
+                        }
+                    }
+                });
+                
+                // Fallback: Memantau setelah iframe dimuat (jika ada DOM yang bisa diakses)
+                commentEditorIframe.addEventListener('load', function() {
+                    try {
+                        const iframeDoc = commentEditorIframe.contentDocument || commentEditorIframe.contentWindow.document;
+                        // Opsi 1: Coba tangani klik tombol submit di dalam iframe (paling langsung)
+                        const submitButton = iframeDoc.querySelector('input[type="button"][value="Publikasikan"]') ||
+                                             iframeDoc.querySelector('button[type="submit"]'); // Coba selector lain
+
+                        if (submitButton) {
+                            submitButton.addEventListener('click', function() {
+                                setTimeout(() => {
+                                    // Ini akan muncul setiap kali tombol publikasikan diklik.
+                                    // Tidak menjamin sukses mutlak karena validasi bisa gagal.
+                                    showDynamicIslandNotification("Komentar dikirim!", "check");
+                                }, 500); // Tunda sebentar
+                            });
+                        }
+
+                        // Opsi 2: Monitor perubahan DOM di iframe (lebih andal jika tidak ada same-origin)
+                        // Karena same-origin, ini kemungkinan besar akan diblokir, tapi tidak ada salahnya mencoba.
+                        // let observer = new MutationObserver(function(mutations) {
+                        //     mutations.forEach(function(mutation) {
+                        //         if (mutation.addedNodes.length) {
+                        //             // Contoh: Cari elemen yang muncul setelah komentar sukses
+                        //             if (iframeDoc.querySelector('.comment-success-message-class')) { // Ganti dengan class yang spesifik
+                        //                 showDynamicIslandNotification("Komentar berhasil ditambahkan!", "check");
+                        //                 observer.disconnect(); // Hentikan observer setelah sukses
+                        //             }
+                        //         }
+                        //     });
+                        // });
+                        // observer.observe(iframeDoc.body, { childList: true, subtree: true });
+
+                    } catch (e) {
+                        console.warn("Tidak dapat mengakses iframe komentar karena same-origin policy:", e);
+                        // Jika akses diblokir, notifikasi komentar tidak bisa dipicu secara presisi.
+                    }
+                });
             }
         }
-
-        /**
-         * Menghitung dan menampilkan progress bar saat membaca postingan.
-         */
-        /**
-       * Menghitung dan menampilkan progress bar saat membaca postingan.
-       */
-      function setupReadingProgress() {
-          const progressBar = document.getElementById("progressBar");
-          // Tentukan container scroll berdasarkan ukuran viewport
-          const scrollContainer = window.innerWidth < 1024 ? window : document.querySelector(".ios-main-content");
-          const contentContainer = document.querySelector(".posts-wrapper-outer");
-          if (!progressBar || !scrollContainer || !contentContainer) return;
-
-          function updateProgress() {
-              let containerHeight;
-              let scrollPosition;
-
-              // Gunakan metode kalkulasi yang berbeda untuk mobile dan desktop
-              if (scrollContainer === window) {
-                  // --- INI ADALAH PERBAIKAN UNTUK MOBILE ---
-                  containerHeight = contentContainer.scrollHeight - window.innerHeight;
-                  scrollPosition = window.scrollY;
-              } else {
-                  // Ini adalah logika lama untuk desktop, yang sudah benar
-                  containerHeight = contentContainer.scrollHeight - scrollContainer.clientHeight;
-                  scrollPosition = scrollContainer.scrollTop;
-              }
-
-              if (containerHeight > 0) {
-                  const progress = (scrollPosition / containerHeight) * 100;
-                  progressBar.style.width = `${progress}%`;
-              } else {
-                  progressBar.style.width = "0%";
-              }
-          }
-          scrollContainer.addEventListener("scroll", updateProgress, { passive: true });
-      }
-
-        //================================================
-        // 2. DOMContentLoaded INITIALIZATION
-        //================================================
-        document.addEventListener("DOMContentLoaded", function() {
-            
-            // Inisialisasi semua fungsi utama
-            initializeVisitorCounter();
-            setupClock();
-            setInterval(setupClock, 60000); // Perbarui jam setiap menit
-            setupThemeToggle();
-            setupMobileNav();
-
-            // Atur tahun hak cipta di footer sidebar
-            const currentYearSidebar = document.getElementById("currentYearSidebar");
-            if (currentYearSidebar) currentYearSidebar.textContent = new Date().getFullYear();
-
-            // Aktifkan live search
-            const searchInput = document.querySelector(".sidebar-search-input");
-            const searchResults = document.querySelector("#live-search-results");
-            liveSearchHandler(searchInput, searchResults);
-
-            // Aktifkan popup
-            setupNonModalPopup("togglePopularBtn", "popularPostsOverlay", ".popup-container", "closePopularBtn");
-
-			// Aktifkan popup untuk FAB Pencarian
-            setupNonModalPopup('toggleSearchBtn', 'searchFabOverlay', '.popup-container', 'closeSearchFabBtn');
-
-            // Atur fungsionalitas Tombol Kembali ke Atas
-            const backToTopBtn = document.getElementById("backToTopBtn");
-            const mainContent = document.querySelector(".ios-main-content");
-            const scrollContainer = window.innerWidth < 1024 ? window : mainContent;
-
-            function handleScroll() {
-                if (!backToTopBtn) return;
-                const scrollTop = window.innerWidth < 1024 ? (document.documentElement.scrollTop || document.body.scrollTop) : mainContent.scrollTop;
-                if (scrollTop > 200) {
-                    backToTopBtn.style.display = "flex";
-                    document.body.classList.remove('btt-is-hidden');
-                } else {
-                    backToTopBtn.style.display = "none";
-                    document.body.classList.add('btt-is-hidden');
-                }
-            }
-
-            function scrollToTop() {
-                if (scrollContainer) {
-                    scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
-                }
-            }
-            if (scrollContainer) scrollContainer.addEventListener("scroll", handleScroll);
-            if (backToTopBtn) backToTopBtn.addEventListener("click", scrollToTop);
-            
-            // Jadikan jam di status bar sebagai tombol scroll to top juga
-            const statusBarTime = document.getElementById("statusBarTime");
-            if (statusBarTime) statusBarTime.addEventListener("click", scrollToTop);
-
-            handleScroll(); // Panggil sekali untuk mengatur status awal tombol
-
-            // Jalankan fungsi khusus halaman postingan
-            if (document.body.classList.contains('item-page')) {
-                setupReadingProgress();
-
-                // =========================================================
-                // BAGIAN PENTING YANG HARUS DIPASTIKAN ADA
-                // Kode ini harus ada untuk menampilkan container progress bar
-                const progressContainer = document.querySelector('.progress-container');
-                if (progressContainer) {
-                    progressContainer.style.display = 'block';
-                }
-                // =========================================================
-
-                const tocPopupBody = document.getElementById('tocPopupBody');
-                const postBody = document.querySelector('.ios-post-body-full');
-                const tocBtn = document.getElementById('toggleTocBtn');
-
-                /**
-                 * Membuat daftar isi (Table of Contents) secara dinamis dari heading H2 dan H3.
-                 */
-                function generateTableOfContents() {
-                    if (!tocPopupBody || !postBody) return;
-                    const headings = postBody.querySelectorAll('h2, h3');
-
-                    // Sembunyikan tombol TOC jika tidak ada cukup heading
-                    if (headings.length < 2) {
-                        if (tocBtn) tocBtn.style.display = 'none';
-                        return;
-                    }
-
-                    let tocHTML = '<ul>';
-                    headings.forEach((heading, index) => {
-                        const id = 'toc-' + index;
-                        heading.id = id;
-                        const tagName = heading.tagName.toLowerCase();
-                        tocHTML += `<li class='toc-${tagName}'><a class='toc-link' href='#${id}'>${heading.textContent}</a></li>`;
-                    });
-                    tocHTML += '</ul>';
-                    tocPopupBody.innerHTML = tocHTML;
-                }
-
-                /**
-                 * Menangani klik pada link TOC untuk menutup popup.
-                 */
-                function setupTocLinkClickHandler() {
-                    if (!tocPopupBody) return;
-                    tocPopupBody.addEventListener('click', function(e) {
-                        if (e.target && e.target.classList.contains('toc-link')) {
-                            const tocOverlay = document.getElementById('tocOverlay');
-                            if(tocOverlay) tocOverlay.classList.remove('active');
-                        }
-                    });
-                }
-                
-                if (tocBtn) {
-                    generateTableOfContents();
-                    setupTocLinkClickHandler();
-                    setupNonModalPopup("toggleTocBtn", "tocOverlay", ".popup-container", "closeTocBtn");
-                }
-            }
-        });
-        //]]>
-    </script>
+    });
+    //]]>
+</script>
     
     <!-- Skrip Google Analytics (jika ada) -->
     <b:include data='blog' name='google-analytics'/>

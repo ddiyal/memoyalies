@@ -3313,30 +3313,28 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         const iconEl = notificationEl.querySelector(".notification-icon");
         const textEl = notificationEl.querySelector(".notification-text");
 
-        if (!notificationEl || !iconEl || !textEl) return;
+        if (!notificationEl || !iconEl || !textEl) {
+            console.error("Dynamic Island elements not found. Cannot show notification.");
+            return;
+        }
 
         // Bersihkan kelas ikon sebelumnya dan tambahkan yang baru
-        iconEl.className = 'notification-icon';
+        iconEl.className = 'notification-icon'; // Reset classes
         iconEl.classList.add(iconClass);
         textEl.textContent = message;
 
-        // --- Logika Deteksi Teks Panjang BARU ---
-        // Hapus kelas long-text dari tampilan sebelumnya
-        notificationEl.classList.remove("long-text"); 
-        
-        // Cek panjang teks untuk menyesuaikan font-size jika diperlukan
-        // Angka 20 ini bisa disesuaikan, semakin besar, semakin cepat font diperkecil
-        if (message.length > 20 && window.innerWidth < 768) { // Hanya aktif di mobile (lebar < 768px)
+        // --- Logika Deteksi Teks Panjang ---
+        notificationEl.classList.remove("long-text");
+        if (message.length > 20 && window.innerWidth < 768) {
             notificationEl.classList.add("long-text");
         }
-        // --- Akhir Logika Deteksi Teks Panjang BARU ---
+        // --- Akhir Logika Deteksi Teks Panjang ---
 
         notificationEl.classList.add("show");
 
-        // Bersihkan kelas long-text setelah notifikasi hilang
         setTimeout(() => {
             notificationEl.classList.remove("show");
-            notificationEl.classList.remove("long-text"); // Pastikan kelas dibersihkan
+            notificationEl.classList.remove("long-text");
         }, duration);
     }
 
@@ -3346,13 +3344,20 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     function initializeVisitorCounter() {
         const displayElement = document.getElementById("total-visitors-display");
         const sourceElement = document.getElementById("Stats1_totalCount");
-        if (!displayElement || !sourceElement) return;
+        if (!displayElement || !sourceElement) {
+            console.warn("Visitor counter elements not found. Skipping initialization.");
+            return;
+        }
 
         const formatCounter = () => {
-            const rawText = sourceElement.textContent;
-            if (rawText && rawText.trim() !== "") {
-                const number = parseInt(rawText.replace(/[,.]/g, ""), 10);
-                displayElement.textContent = isNaN(number) ? rawText : number.toLocaleString("id-ID");
+            try {
+                const rawText = sourceElement.textContent;
+                if (rawText && rawText.trim() !== "") {
+                    const number = parseInt(rawText.replace(/[,.]/g, ""), 10);
+                    displayElement.textContent = isNaN(number) ? rawText : number.toLocaleString("id-ID");
+                }
+            } catch (error) {
+                console.error("Error formatting visitor count:", error);
             }
         };
         const observer = new MutationObserver(formatCounter);
@@ -3367,6 +3372,12 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         const now = new Date();
         const timeEl = document.getElementById("statusBarTime");
         const dateEl = document.getElementById("statusBarDate");
+        
+        if (!timeEl && !dateEl) {
+            console.warn("Status bar clock elements not found. Skipping clock setup.");
+            return;
+        }
+
         if (timeEl) {
             const hours = now.getHours().toString().padStart(2, "0");
             const minutes = now.getMinutes().toString().padStart(2, "0");
@@ -3388,7 +3399,10 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     function setupThemeToggle() {
         const mainToggleButton = document.getElementById("theme-toggle");
         const navToggleButton = document.getElementById("nav-theme-toggle");
-        if (!mainToggleButton) return;
+        if (!mainToggleButton) {
+            console.warn("Main theme toggle button not found. Skipping theme setup.");
+            return;
+        }
 
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
         let currentTheme = localStorage.getItem("theme");
@@ -3397,14 +3411,20 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
             const isDark = theme === 'dark';
             document.body.classList.toggle("dark-mode", isDark);
 
-            if (mainToggleButton) {
+            if (mainToggleButton.querySelector('.sun-icon')) { // Cek elemen sebelum akses
                 mainToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+            }
+            if (mainToggleButton.querySelector('.moon-icon')) { // Cek elemen sebelum akses
                 mainToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
             }
 
             if (navToggleButton) {
-                navToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
-                navToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+                if (navToggleButton.querySelector('.sun-icon')) { // Cek elemen sebelum akses
+                    navToggleButton.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+                }
+                if (navToggleButton.querySelector('.moon-icon')) { // Cek elemen sebelum akses
+                    navToggleButton.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+                }
             }
         }
 
@@ -3420,7 +3440,9 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         }
 
         mainToggleButton.addEventListener("click", toggleTheme);
-        if (navToggleButton) navToggleButton.addEventListener("click", toggleTheme);
+        if (navToggleButton) {
+            navToggleButton.addEventListener("click", toggleTheme);
+        }
 
         prefersDark.addEventListener("change", (e) => {
             if (!localStorage.getItem("theme")) {
@@ -3435,7 +3457,10 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
      * Menangani logika pencarian langsung saat pengguna mengetik.
      */
     function liveSearchHandler(inputElement, resultsContainer) {
-        if (!inputElement || !resultsContainer) return;
+        if (!inputElement || !resultsContainer) {
+            console.warn("Search input or results container not found. Skipping live search setup.");
+            return;
+        }
         let searchTimeout;
         inputElement.addEventListener("keyup", (e) => {
             const query = e.target.value.trim();
@@ -3452,13 +3477,19 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
 
             searchTimeout = setTimeout(() => {
                 fetch(`/feeds/posts/default?alt=json&q=${encodeURIComponent(query)}&max-results=5`)
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) { // Check for HTTP errors
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         let resultsHTML = "";
-                        if (data.feed.entry && data.feed.entry.length > 0) {
+                        // Pastikan data.feed dan data.feed.entry ada sebelum diakses
+                        if (data && data.feed && data.feed.entry && data.feed.entry.length > 0) {
                             resultsHTML += "<ul>";
                             data.feed.entry.forEach(entry => {
-                                const postTitle = entry.title.$t;
+                                const postTitle = entry.title && entry.title.$t ? entry.title.$t : "Judul Tidak Tersedia";
                                 const postUrl = (entry.link.find(link => link.rel === "alternate") || {}).href;
                                 if (postUrl) {
                                     resultsHTML += `<li><a href="${postUrl}">${postTitle}</a></li>`;
@@ -3474,7 +3505,8 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                     })
                     .catch(error => {
                         console.error("Error fetching search results:", error);
-                        resultsContainer.innerHTML = '<div class="no-results">Gagal memuat hasil.</div>';
+                        resultsContainer.innerHTML = '<div class="no-results">Gagal memuat hasil. Mohon coba lagi.</div>';
+                        showDynamicIslandNotification("Pencarian Gagal", "info"); // Notifikasi untuk error pencarian
                     });
             }, 300);
         });
@@ -3486,11 +3518,18 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     function setupNonModalPopup(triggerId, overlayId, containerClass, closeId) {
         const triggerBtn = document.getElementById(triggerId);
         const overlay = document.getElementById(overlayId);
-        if (!triggerBtn || !overlay) return;
+        const closeBtn = document.getElementById(closeId);
+
+        if (!triggerBtn || !overlay || !closeBtn) {
+            console.warn(`Popup setup failed for ${triggerId}. Missing elements.`);
+            return;
+        }
 
         const container = overlay.querySelector(containerClass);
-        const closeBtn = document.getElementById(closeId);
-        if (!container || !closeBtn) return;
+        if (!container) {
+            console.error(`Popup container with class ${containerClass} not found for ${overlayId}.`);
+            return;
+        }
 
         const closePopup = () => overlay.classList.remove('active');
 
@@ -3515,18 +3554,25 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     function setupMobileNav() {
         if (window.innerWidth >= 1024) return;
         const mobileNav = document.getElementById("mobileBottomNav");
-        if (mobileNav) mobileNav.style.display = "flex";
+        if (!mobileNav) {
+            console.warn("Mobile bottom navigation not found. Skipping mobile nav setup.");
+            return;
+        }
+        mobileNav.style.display = "flex";
 
         const navCategories = document.getElementById("nav-categories");
         const categoriesModal = document.getElementById("categoriesModalOverlay");
         const categoriesBody = document.getElementById("categoriesModalBody");
         const categoriesSource = document.querySelector(".sidebar-menu .widget.Label ul");
+        
         if (navCategories && categoriesModal && categoriesBody && categoriesSource) {
             categoriesBody.innerHTML = categoriesSource.outerHTML;
             navCategories.addEventListener("click", () => categoriesModal.classList.add("active"));
             categoriesModal.addEventListener("click", e => {
                 if (e.target === categoriesModal) categoriesModal.classList.remove("active");
             });
+        } else {
+            console.warn("Mobile categories setup skipped. Missing elements.");
         }
 
         const navMenu = document.getElementById("nav-menu");
@@ -3534,12 +3580,18 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         const overlayMobile = document.getElementById("overlayMobile");
 
         function toggleMobileMenu() {
+            if (!slideMenu || !overlayMobile) {
+                console.error("Mobile menu or overlay elements not found.");
+                return;
+            }
             slideMenu.classList.toggle("open");
             overlayMobile.classList.toggle("active");
         }
         if (navMenu && slideMenu && overlayMobile) {
             navMenu.addEventListener("click", toggleMobileMenu);
             overlayMobile.addEventListener("click", toggleMobileMenu);
+        } else {
+            console.warn("Mobile menu toggle setup skipped. Missing elements.");
         }
     }
 
@@ -3550,25 +3602,33 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         const progressBar = document.getElementById("progressBar");
         const scrollContainer = window.innerWidth < 1024 ? window : document.querySelector(".ios-main-content");
         const contentContainer = document.querySelector(".posts-wrapper-outer");
-        if (!progressBar || !scrollContainer || !contentContainer) return;
+        
+        if (!progressBar || !scrollContainer || !contentContainer) {
+            console.warn("Reading progress elements not found. Skipping setup.");
+            return;
+        }
 
         function updateProgress() {
-            let containerHeight;
-            let scrollPosition;
+            try {
+                let containerHeight;
+                let scrollPosition;
 
-            if (scrollContainer === window) {
-                containerHeight = document.documentElement.scrollHeight - window.innerHeight;
-                scrollPosition = window.scrollY;
-            } else {
-                containerHeight = contentContainer.scrollHeight - scrollContainer.clientHeight;
-                scrollPosition = scrollContainer.scrollTop;
-            }
+                if (scrollContainer === window) {
+                    containerHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    scrollPosition = window.scrollY;
+                } else {
+                    containerHeight = contentContainer.scrollHeight - scrollContainer.clientHeight;
+                    scrollPosition = scrollContainer.scrollTop;
+                }
 
-            if (containerHeight > 0) {
-                const progress = (scrollPosition / containerHeight) * 100;
-                progressBar.style.width = `${progress}%`;
-            } else {
-                progressBar.style.width = "0%";
+                if (containerHeight > 0) {
+                    const progress = (scrollPosition / containerHeight) * 100;
+                    progressBar.style.width = `${progress}%`;
+                } else {
+                    progressBar.style.width = "0%";
+                }
+            } catch (error) {
+                console.error("Error updating reading progress:", error);
             }
         }
         scrollContainer.addEventListener("scroll", updateProgress, { passive: true });
@@ -3581,9 +3641,9 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     //================================================
     document.addEventListener("DOMContentLoaded", function() {
 
-        // Notifikasi: Halaman berhasil dimuat
+        // Notifikasi: Halaman berhasil dimuat (menggunakan judul postingan jika di halaman postingan)
         let pageLoadMessage = "Halaman berhasil dimuat";
-        const pageType = '<data:blog.pageType/>'; // Dapatkan tipe halaman dari data Blogger
+        const pageType = '<data:blog.pageType/>';
         const isHomepage = pageType === 'index' && !'<data:blog.searchQuery/>' && !'<data:blog.searchLabel/>';
         const isLabelPage = pageType === 'index' && '<data:blog.searchLabel/>';
         const isSingleItemPage = document.body.classList.contains('item-page');
@@ -3591,7 +3651,6 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         if (isHomepage) {
             pageLoadMessage = "Beranda dimuat";
         } else if (isLabelPage) {
-            // Ambil nama label secara langsung dari data Blogger
             const labelName = '<data:blog.searchLabel.escaped/>';
             pageLoadMessage = `Label '${labelName}' dimuat`;
         } else if (isSingleItemPage) {
@@ -3601,15 +3660,9 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                 const trimmedPostTitle = postTitle.split(/\s+/).slice(0, 3).join(" ");
                 pageLoadMessage = `${trimmedPostTitle} berhasil dimuat`;
             } else {
-                // Fallback jika judul postingan tidak ditemukan tapi ini halaman item
                 pageLoadMessage = "Postingan dimuat";
+                console.warn("Post title element not found on item page.");
             }
-        } else {
-            // Untuk halaman lain seperti halaman arsip, halaman statis, atau hasil pencarian
-            // Anda bisa menyesuaikannya di sini jika perlu. Saat ini menggunakan default "Halaman berhasil dimuat"
-            // Atau bisa juga ambil judul halaman dari <title> jika diperlukan
-            // const fullPageTitle = document.title.split(' - ')[0]; // Contoh potong dari title tag
-            // pageLoadMessage = `${fullPageTitle} dimuat`;
         }
         showDynamicIslandNotification(pageLoadMessage, "check");
 
@@ -3617,23 +3670,29 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         // Inisialisasi semua fungsi utama
         initializeVisitorCounter();
         setupClock();
-        setInterval(setupClock, 60000); // Perbarui jam setiap menit
+        // Hanya atur interval jika elemen jam ditemukan
+        if (document.getElementById("statusBarTime") || document.getElementById("statusBarDate")) {
+             setInterval(setupClock, 60000); 
+        }
+       
         setupThemeToggle();
         setupMobileNav();
 
         // Notifikasi: Deteksi online/offline
-        // Pemicu saat offline
         window.addEventListener('offline', function() {
             showDynamicIslandNotification("Anda sedang offline!", "wifi-off");
         });
-        // Pemicu saat kembali online
         window.addEventListener('online', function() {
             showDynamicIslandNotification("Kembali online!", "wifi"); 
         });
 
         // Atur tahun hak cipta di footer sidebar
         const currentYearSidebar = document.getElementById("currentYearSidebar");
-        if (currentYearSidebar) currentYearSidebar.textContent = new Date().getFullYear();
+        if (currentYearSidebar) {
+            currentYearSidebar.textContent = new Date().getFullYear();
+        } else {
+            console.warn("Sidebar current year element not found.");
+        }
 
         // Aktifkan live search untuk sidebar
         const sidebarSearchInput = document.querySelector(".sidebar-search-input");
@@ -3662,16 +3721,19 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
 
         // Aktifkan popup untuk FAB Pencarian
         setupNonModalPopup('toggleSearchBtn', 'searchFabOverlay', '.popup-container', 'closeSearchFabBtn');
-        // Notifikasi untuk FAB Pencarian sudah ditangani di liveSearchHandler
 
         // Atur fungsionalitas Tombol Kembali ke Atas
         const backToTopBtn = document.getElementById("backToTopBtn");
         const mainContent = document.querySelector(".ios-main-content");
-        const scrollContainer = window.innerWidth < 1024 ? window : mainContent;
+        const scrollContainer = (window.innerWidth < 1024) ? window : mainContent; // Perhatikan tanda kurung
+
+        if (!mainContent) {
+            console.error("Main content element '.ios-main-content' not found. Back to top and reading progress might not work correctly.");
+        }
 
         function handleScroll() {
-            if (!backToTopBtn) return;
-            const scrollTop = scrollContainer === window ? (document.documentElement.scrollTop || document.body.scrollTop) : mainContent.scrollTop;
+            if (!backToTopBtn || !scrollContainer) return; // Pastikan elemen ada
+            const scrollTop = (scrollContainer === window) ? (document.documentElement.scrollTop || document.body.scrollTop) : scrollContainer.scrollTop; // Gunakan scrollContainer.scrollTop untuk elemen
 
             if (scrollTop > 200) {
                 backToTopBtn.style.display = "flex";
@@ -3685,17 +3747,28 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         function scrollToTop() {
             if (scrollContainer) {
                 scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
-                // Notifikasi: Kembali ke atas!
                 showDynamicIslandNotification("Kembali ke atas!", "arrow-up");
+            } else {
+                 console.warn("Scroll container not available for scroll to top.");
             }
         }
-        if (scrollContainer) scrollContainer.addEventListener("scroll", handleScroll);
-        if (backToTopBtn) backToTopBtn.addEventListener("click", scrollToTop);
+        if (scrollContainer) {
+            scrollContainer.addEventListener("scroll", handleScroll);
+        }
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener("click", scrollToTop);
+        } else {
+             console.warn("Back to top button not found. Skipping event listener.");
+        }
 
         const statusBarTime = document.getElementById("statusBarTime");
-        if (statusBarTime) statusBarTime.addEventListener("click", scrollToTop);
+        if (statusBarTime) {
+            statusBarTime.addEventListener("click", scrollToTop);
+        } else {
+            console.warn("Status bar time element not found. Cannot attach scroll to top listener.");
+        }
 
-        handleScroll();
+        handleScroll(); // Panggil sekali untuk mengatur status awal tombol
 
         if (isSingleItemPage) {
             setupReadingProgress();
@@ -3703,6 +3776,8 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
             const progressContainer = document.querySelector('.progress-container');
             if (progressContainer) {
                 progressContainer.style.display = 'block';
+            } else {
+                console.warn("Reading progress container not found.");
             }
 
             const tocPopupBody = document.getElementById('tocPopupBody');
@@ -3710,11 +3785,15 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
             const tocBtn = document.getElementById('toggleTocBtn');
 
             function generateTableOfContents() {
-                if (!tocPopupBody || !postBody) return;
+                if (!tocPopupBody || !postBody) {
+                    console.warn("TOC elements or post body not found. Skipping TOC generation.");
+                    return;
+                }
                 const headings = postBody.querySelectorAll('h2, h3');
 
                 if (headings.length < 2) {
                     if (tocBtn) tocBtn.style.display = 'none';
+                    console.info("Less than 2 headings found. Hiding TOC button.");
                     return;
                 }
 
@@ -3743,27 +3822,30 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                 generateTableOfContents();
                 setupTocLinkClickHandler();
                 setupNonModalPopup("toggleTocBtn", "tocOverlay", ".popup-container", "closeTocBtn");
-                toggleTocBtn.addEventListener('click', () => {
+                tocBtn.addEventListener('click', () => {
                     setTimeout(() => {
                         showDynamicIslandNotification("Daftar Isi", "list");
                     }, 100);
                 });
+            } else {
+                console.warn("Table of Contents button not found. Skipping TOC setup.");
             }
 
             // Notifikasi: Berhasil menambahkan komentar
             const commentEditorIframe = document.getElementById('comment-editor');
             if (commentEditorIframe) {
                 // Memantau pesan dari iframe (misalnya, jika Blogger mengirim postMessage)
-                window.addEventListener('message', function(event) {
-                    // Hanya proses pesan dari origin Blogger
+                const messageListener = function(event) {
                     if (event.origin.includes('blogger.com') || event.origin.includes('blogspot.com')) {
                         if (event.data && typeof event.data === 'string' && 
                             (event.data.includes('comment-posted') || event.data.includes('comment_published') || 
                              event.data.includes('parent.cmtfp.comment_posted'))) {
                             showDynamicIslandNotification("Komentar berhasil ditambahkan!", "check");
+                            window.removeEventListener('message', messageListener); // Hapus listener setelah sukses
                         }
                     }
-                });
+                };
+                window.addEventListener('message', messageListener);
                 
                 commentEditorIframe.addEventListener('load', function() {
                     try {
@@ -3779,9 +3861,11 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                             });
                         }
                     } catch (e) {
-                        console.warn("Tidak dapat mengakses iframe komentar karena same-origin policy:", e);
+                        console.warn("Could not access comment iframe due to same-origin policy:", e.message);
                     }
-                });
+                }, { once: true }); // Hanya jalankan listener 'load' sekali
+            } else {
+                console.warn("Comment editor iframe not found. Comment notification setup skipped.");
             }
         }
     });

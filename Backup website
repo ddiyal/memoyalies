@@ -250,41 +250,67 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--c-accent); /* Warna aksen sebagai latar belakang */
-    color: var(--c-accent-text); /* Warna teks untuk notifikasi */
-    padding: 6px 12px;
+    transform: translate(-50%, -50%); /* Posisi default tersembunyi */
+    background-color: var(--c-accent);
+    color: var(--c-accent-text);
+    padding: 0 12px;
+    height: 32px; /* Tinggi terkontrol di dalam status bar */
+    line-height: 32px; /* Pusatkan teks vertikal */
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
     display: flex;
-    align-items: center;
+    align-items: center; /* Pusatkan item secara vertikal */
     gap: 8px;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Animasi iOS-like: muncul cepat lalu melambat */
+    transition: 
+        opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+        transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1006; /* Pastikan di atas elemen lain di status bar */
-    pointer-events: none; /* Agar tidak menghalangi klik di bawahnya */
+    z-index: 1006;
+    pointer-events: none;
+
+    /* Penyesuaian Lebar & Teks */
+    width: max-content; /* Lebar menyesuaikan konten */
+    max-width: calc(100% - 100px); /* Batas lebar maksimum di mobile (100px = ruang untuk elemen lain di status bar) */
+    white-space: nowrap; /* Teks tidak akan wrap */
+    overflow: hidden; /* Sembunyikan teks yang melebihi */
+    text-overflow: ellipsis; /* Tambahkan elipsis (...) jika teks terpotong */
 }
 
+/* Kondisi saat notifikasi aktif/terlihat */
 .dynamic-island-notification.show {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1); /* Tampil dengan skala normal */
 }
 
-/* Gaya untuk ikon notifikasi (opsional, bisa diganti SVG) */
+/* Efek awal saat notifikasi tersembunyi (sedikit diperkecil) */
+.dynamic-island-notification:not(.show) {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+/* Mengurangi ukuran font jika teks terlalu panjang (khusus mobile) */
+@media (max-width: 480px) { /* Targetkan ponsel dengan lebar layar kecil */
+    .dynamic-island-notification.long-text {
+        font-size: 11px; /* Perkecil ukuran font */
+        max-width: calc(100% - 80px); /* Mungkin perlu batas lebar yang lebih kecil lagi */
+    }
+}
+
+/* Gaya untuk ikon notifikasi */
 .notification-icon {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 16px; /* Ukuran ikon */
+    height: 16px; /* Ukuran ikon */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-/* Contoh ikon: centang, info, cari, dll. */
+/* Definisi Ikon-ikon */
 .notification-icon.check {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4.5 12.75l6 6 9-13.5'/%3E%3C/svg%3E");
 }
@@ -294,19 +320,28 @@ body {
 .notification-icon.search {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'/%3E%3C/svg%3E");
 }
-.notification-icon.moon { /* Untuk dark mode */
+.notification-icon.moon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21.75 12.793a9 9 0 10-10.792 10.792A9 9 0 0021.75 12.793z'/%3E%3C/svg%3E");
-    stroke: none; /* Pastikan fill yang digunakan, bukan stroke */
+    stroke: none;
 }
-.notification-icon.sun { /* Untuk light mode */
+.notification-icon.sun {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m18.364 4.546l-1.06 1.06M6.707 6.707l-1.06-1.06M12 18a6 6 0 100-12 6 6 0 000 12zM19.782 4.218l-1.06 1.06M5.636 18.364l-1.06 1.06'/%3E%3C/svg%3E");
-    stroke: none; /* Pastikan fill yang digunakan, bukan stroke */
+    stroke: none;
 }
 .notification-icon.list {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'/%3E%3C/svg%3E");
 }
 .notification-icon.posts {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M16.5 7.5L21 12m0 0l-4.5 4.5M21 12H3'/%3E%3C/svg%3E");
+}
+.notification-icon.wifi-off {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M10.125 11.25c.828-.465 1.649-.611 2.45-.611A3.375 3.375 0 0116.5 15c-.689 0-1.742 0-2.564-.157m0 0l-1.464 1.464M12 3.375l-.324-.324a3 3 0 00-4.24-.04L4.324 5.234a4.5 4.5 0 000 6.364L12 20.625l7.676-7.676a4.5 4.5 0 000-6.364l-2.059-2.06a3 3 0 00-4.24-.04zm-9.75 3.375l-.04-.04M21.75 6.75l-.04-.04M15 12h.008v.008H15z'/%3E%3C/svg%3E");
+}
+.notification-icon.arrow-up {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18'/%3E%3C/svg%3E");
+}
+.notification-icon.wifi {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8.28 7.64a4 4 0 017.44 0M11.25 18L10 16.75a4.5 4.5 0 01-1.373-3.19.079.079 0 01.079-.079h2.784c.079 0 .16.031.22.09l.66 1.06M15 12h.008v.008H15zM12 21.75V2.25M15.75 18h.008v.008H15.75z'/%3E%3C/svg%3E");
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -3270,7 +3305,7 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     /**
      * Menampilkan notifikasi "Dynamic Island" di status bar.
      * @param {string} message Pesan yang akan ditampilkan.
-     * @param {string} iconClass Kelas CSS untuk ikon (e.g., 'check', 'info', 'search', 'moon', 'sun', 'list', 'posts').
+     * @param {string} iconClass Kelas CSS untuk ikon (e.g., 'check', 'info', 'search', 'moon', 'sun', 'list', 'posts', 'wifi-off', 'arrow-up', 'wifi').
      * @param {number} duration Durasi notifikasi dalam milidetik (default 3000).
      */
     function showDynamicIslandNotification(message, iconClass, duration = 3000) {
@@ -3285,10 +3320,23 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         iconEl.classList.add(iconClass);
         textEl.textContent = message;
 
+        // --- Logika Deteksi Teks Panjang BARU ---
+        // Hapus kelas long-text dari tampilan sebelumnya
+        notificationEl.classList.remove("long-text"); 
+        
+        // Cek panjang teks untuk menyesuaikan font-size jika diperlukan
+        // Angka 20 ini bisa disesuaikan, semakin besar, semakin cepat font diperkecil
+        if (message.length > 20 && window.innerWidth < 768) { // Hanya aktif di mobile (lebar < 768px)
+            notificationEl.classList.add("long-text");
+        }
+        // --- Akhir Logika Deteksi Teks Panjang BARU ---
+
         notificationEl.classList.add("show");
 
+        // Bersihkan kelas long-text setelah notifikasi hilang
         setTimeout(() => {
             notificationEl.classList.remove("show");
+            notificationEl.classList.remove("long-text"); // Pastikan kelas dibersihkan
         }, duration);
     }
 
@@ -3307,10 +3355,9 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                 displayElement.textContent = isNaN(number) ? rawText : number.toLocaleString("id-ID");
             }
         };
-        // Amati perubahan pada elemen sumber, karena Blogger memuatnya secara dinamis
         const observer = new MutationObserver(formatCounter);
         observer.observe(sourceElement, { childList: true, characterData: true, subtree: true });
-        formatCounter(); // Panggil sekali saat inisialisasi
+        formatCounter();
     }
 
     /**
@@ -3534,24 +3581,35 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
     //================================================
     document.addEventListener("DOMContentLoaded", function() {
 
-        // Notifikasi: Konten berhasil dimuat (menggunakan judul postingan jika di halaman postingan)
+        // Notifikasi: Halaman berhasil dimuat
         let pageLoadMessage = "Halaman berhasil dimuat";
-        const pageTitleElement = document.querySelector('h2.ios-post-title a'); // Mencoba ambil judul postingan
-        
-        // Hanya tampilkan judul postingan jika ini halaman postingan tunggal
-        if (document.body.classList.contains('item-page') && pageTitleElement) {
-            const postTitle = pageTitleElement.textContent.trim();
-            const trimmedPostTitle = postTitle.split(/\s+/).slice(0, 3).join(" ");
-            pageLoadMessage = `${trimmedPostTitle} berhasil dimuat`;
-        } else {
-            // Jika bukan halaman postingan atau tidak ada judul postingan, gunakan judul blog
-            const blogTitleElement = document.querySelector('.sidebar-main-title a');
-            let currentBlogTitle = "Situs Web"; // Default fallback
-            if (blogTitleElement) {
-                currentBlogTitle = blogTitleElement.textContent.trim();
+        const pageType = '<data:blog.pageType/>'; // Dapatkan tipe halaman dari data Blogger
+        const isHomepage = pageType === 'index' && !'<data:blog.searchQuery/>' && !'<data:blog.searchLabel/>';
+        const isLabelPage = pageType === 'index' && '<data:blog.searchLabel/>';
+        const isSingleItemPage = document.body.classList.contains('item-page');
+
+        if (isHomepage) {
+            pageLoadMessage = "Beranda dimuat";
+        } else if (isLabelPage) {
+            // Ambil nama label secara langsung dari data Blogger
+            const labelName = '<data:blog.searchLabel.escaped/>';
+            pageLoadMessage = `Label '${labelName}' dimuat`;
+        } else if (isSingleItemPage) {
+            const pageTitleElement = document.querySelector('h2.ios-post-title a');
+            if (pageTitleElement) {
+                const postTitle = pageTitleElement.textContent.trim();
+                const trimmedPostTitle = postTitle.split(/\s+/).slice(0, 3).join(" ");
+                pageLoadMessage = `${trimmedPostTitle} berhasil dimuat`;
+            } else {
+                // Fallback jika judul postingan tidak ditemukan tapi ini halaman item
+                pageLoadMessage = "Postingan dimuat";
             }
-            const trimmedBlogTitle = currentBlogTitle.split(/\s+/).slice(0, 3).join(" ");
-            pageLoadMessage = `${trimmedBlogTitle} berhasil dimuat`;
+        } else {
+            // Untuk halaman lain seperti halaman arsip, halaman statis, atau hasil pencarian
+            // Anda bisa menyesuaikannya di sini jika perlu. Saat ini menggunakan default "Halaman berhasil dimuat"
+            // Atau bisa juga ambil judul halaman dari <title> jika diperlukan
+            // const fullPageTitle = document.title.split(' - ')[0]; // Contoh potong dari title tag
+            // pageLoadMessage = `${fullPageTitle} dimuat`;
         }
         showDynamicIslandNotification(pageLoadMessage, "check");
 
@@ -3562,6 +3620,16 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         setInterval(setupClock, 60000); // Perbarui jam setiap menit
         setupThemeToggle();
         setupMobileNav();
+
+        // Notifikasi: Deteksi online/offline
+        // Pemicu saat offline
+        window.addEventListener('offline', function() {
+            showDynamicIslandNotification("Anda sedang offline!", "wifi-off");
+        });
+        // Pemicu saat kembali online
+        window.addEventListener('online', function() {
+            showDynamicIslandNotification("Kembali online!", "wifi"); 
+        });
 
         // Atur tahun hak cipta di footer sidebar
         const currentYearSidebar = document.getElementById("currentYearSidebar");
@@ -3617,6 +3685,8 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
         function scrollToTop() {
             if (scrollContainer) {
                 scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+                // Notifikasi: Kembali ke atas!
+                showDynamicIslandNotification("Kembali ke atas!", "arrow-up");
             }
         }
         if (scrollContainer) scrollContainer.addEventListener("scroll", handleScroll);
@@ -3627,7 +3697,7 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
 
         handleScroll();
 
-        if (document.body.classList.contains('item-page')) {
+        if (isSingleItemPage) {
             setupReadingProgress();
 
             const progressContainer = document.querySelector('.progress-container');
@@ -3687,50 +3757,29 @@ body:not(.item-page).btt-is-hidden .comments-btn { bottom: calc(var(--bottom-nav
                 window.addEventListener('message', function(event) {
                     // Hanya proses pesan dari origin Blogger
                     if (event.origin.includes('blogger.com') || event.origin.includes('blogspot.com')) {
-                        // Periksa data pesan untuk indikasi sukses komentar
-                        // Ini adalah heuristic (dugaan) terbaik, tidak ada API resmi dari Blogger
-                        if (event.data && typeof event.data === 'string' && event.data.includes('comment-posted') || event.data.includes('comment_published')) {
+                        if (event.data && typeof event.data === 'string' && 
+                            (event.data.includes('comment-posted') || event.data.includes('comment_published') || 
+                             event.data.includes('parent.cmtfp.comment_posted'))) {
                             showDynamicIslandNotification("Komentar berhasil ditambahkan!", "check");
                         }
                     }
                 });
                 
-                // Fallback: Memantau setelah iframe dimuat (jika ada DOM yang bisa diakses)
                 commentEditorIframe.addEventListener('load', function() {
                     try {
                         const iframeDoc = commentEditorIframe.contentDocument || commentEditorIframe.contentWindow.document;
-                        // Opsi 1: Coba tangani klik tombol submit di dalam iframe (paling langsung)
                         const submitButton = iframeDoc.querySelector('input[type="button"][value="Publikasikan"]') ||
-                                             iframeDoc.querySelector('button[type="submit"]'); // Coba selector lain
+                                             iframeDoc.querySelector('button[type="submit"]');
 
                         if (submitButton) {
                             submitButton.addEventListener('click', function() {
                                 setTimeout(() => {
-                                    // Ini akan muncul setiap kali tombol publikasikan diklik.
-                                    // Tidak menjamin sukses mutlak karena validasi bisa gagal.
                                     showDynamicIslandNotification("Komentar dikirim!", "check");
-                                }, 500); // Tunda sebentar
+                                }, 500);
                             });
                         }
-
-                        // Opsi 2: Monitor perubahan DOM di iframe (lebih andal jika tidak ada same-origin)
-                        // Karena same-origin, ini kemungkinan besar akan diblokir, tapi tidak ada salahnya mencoba.
-                        // let observer = new MutationObserver(function(mutations) {
-                        //     mutations.forEach(function(mutation) {
-                        //         if (mutation.addedNodes.length) {
-                        //             // Contoh: Cari elemen yang muncul setelah komentar sukses
-                        //             if (iframeDoc.querySelector('.comment-success-message-class')) { // Ganti dengan class yang spesifik
-                        //                 showDynamicIslandNotification("Komentar berhasil ditambahkan!", "check");
-                        //                 observer.disconnect(); // Hentikan observer setelah sukses
-                        //             }
-                        //         }
-                        //     });
-                        // });
-                        // observer.observe(iframeDoc.body, { childList: true, subtree: true });
-
                     } catch (e) {
                         console.warn("Tidak dapat mengakses iframe komentar karena same-origin policy:", e);
-                        // Jika akses diblokir, notifikasi komentar tidak bisa dipicu secara presisi.
                     }
                 });
             }
